@@ -3,7 +3,13 @@ name: Render MdMK
 # মোড:
 #   check   → ১২টি স্টিল ফ্রেম (render-check আর্টিফ্যাক্ট) — চেহারা-ফ্রি ও লেআউট দেখার জন্য
 #   preview → ৪টি স্টিল + ছোট ক্লিপ (২৬–৩৮ সে., SFX সহ) — দ্রুত ও কম খরচ
-#   final   → পূর্ণ রেন্ডার out/MdMK_final.mp4 + যাচাই + Release
+#   final   → পূর্ণ রেন্ডার (HD / Full HD / 4K) + যাচাই + GitHub Release
+#
+# ফাইনালের সংস্করণ (পোর্ট্রেট ৯:১৬):
+#   HD       720×1280   (কম্পোজিশনের আসল মাপ, scale 1)
+#   Full HD  1080×1920  (scale 1.5)
+#   4K       2160×3840  (scale 3)
+# সোর্স ভিডিও ৩৬০×৬৪০, তাই বড় সংস্করণে ভিডিও-অংশ আপস্কেল (নরম) হয়; লেখা/গ্রাফিক্স ধারালো থাকে।
 on:
   workflow_dispatch:
     inputs:
@@ -12,6 +18,11 @@ on:
         type: choice
         options: [check, preview, final]
         default: preview
+      versions:
+        description: "final-এর সংস্করণ: all = HD + Full HD + 4K"
+        type: choice
+        options: [all, hd+fullhd, hd]
+        default: all
       sfx:
         description: "SFX ট্র্যাক মেশাবেন? (false = শুধু কণ্ঠ)"
         type: boolean
@@ -27,9 +38,10 @@ permissions:
 jobs:
   render:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 240      # 4K রেন্ডার ধীর; HD/Full HD আগে শেষ হয়
     env:
       MODE: ${{ inputs.mode }}
+      VERSIONS: ${{ inputs.versions }}
       FPS: 25
       DURATION: "81.32"
     steps:
@@ -64,7 +76,7 @@ jobs:
         run: |
           set -e
           test -f src/MdMK.mp4 || { echo "src/MdMK.mp4 নেই (কেস-সেনসিটিভ নাম!)"; exit 1; }
-          mkdir -p public out
+          mkdir -p public out/logs
           cp src/MdMK.mp4 public/MdMK.mp4
 
       - name: SFX তৈরি (scripts/make_sfx.py)
@@ -89,61 +101,126 @@ jobs:
             echo "SFX বন্ধ — নিঃশব্দ ট্র্যাক" >> out/sfx_report.txt
           fi
 
+      # ───────── প্রি-ফ্লাইট: রেন্ডারের আগেই বান্ডল/কম্পোজিশনের ত্রুটি ধরা ─────────
+      - name: Remotion entry-point খোঁজা
+        run: |
+          for f in src/index.ts src/index.tsx src/index.js src/index.jsx; do
+            if [ -f "$f" ]; then
+              echo "ENTRY=$f" >> "$GITHUB_ENV"
+              echo "entry-point: $f"
+              exit 0
+            fi
+          done
+          echo "::error::src/index.ts পাওয়া যায়নি"; ls -la src; exit 1
+
+      - name: প্রি-ফ্লাইট (কম্পোজিশন তালিকা)
+        run: |
+          set -o pipefail
+          mkdir -p out/logs
+          node --version | tee out/logs/env.log
+          npx remotion versions 2>&1 | tee -a out/logs/env.log || true
+          ls -la public public/sfx 2>&1 | tee -a out/logs/env.log
+          npx remotion compositions "$ENTRY" 2>&1 | tee out/logs/compositions.log
+          grep -q "MdMK" out/logs/compositions.log || { echo "::error::কম্পোজিশন MdMK পাওয়া যায়নি"; exit 1; }
+
       # ───────── check ─────────
       - name: "check: ১২টি স্টিল"
         if: ${{ inputs.mode == 'check' }}
         run: |
+          set -o pipefail
           mkdir -p out/check
           for s in 1 4 8 14 20 27 31 36 40 45 49 56; do
             f=$((s * FPS))
-            npx remotion still MdMK "out/check/frame_$(printf '%03d' $s)s.png" --frame=$f
+            npx remotion still "$ENTRY" MdMK "out/check/frame_$(printf '%03d' $s)s.png" --frame=$f 2>&1 | tee -a out/logs/check.log
           done
 
       # ───────── preview ─────────
       - name: "preview: স্টিল + ছোট ক্লিপ"
         if: ${{ inputs.mode == 'preview' }}
         run: |
+          set -o pipefail
           mkdir -p out/preview
           for s in 3 20 30 48; do
-            npx remotion still MdMK "out/preview/still_${s}s.png" --frame=$((s * FPS))
+            npx remotion still "$ENTRY" MdMK "out/preview/still_${s}s.png" --frame=$((s * FPS)) 2>&1 | tee -a out/logs/preview.log
           done
           # ২৬ সে. → ৩৮ সে. (ফ্রেম ৬৫০–৯৫০): সুন্নাত ব্যাজ + দোয়া অংশ
-          npx remotion render MdMK out/preview/clip_26-38s.mp4 \
-            --frames=650-950 --codec=h264 --audio-codec=aac --crf=23 --overwrite
+          npx remotion render "$ENTRY" MdMK out/preview/clip_26-38s.mp4 \
+            --frames=650-950 --codec=h264 --audio-codec=aac --crf=23 --overwrite 2>&1 | tee -a out/logs/preview.log
 
-      # ───────── final ─────────
-      - name: "final: পূর্ণ রেন্ডার"
+      # ───────── final: HD / Full HD / 4K ─────────
+      - name: "final: HD (720×1280)"
+        id: r_hd
         if: ${{ inputs.mode == 'final' }}
         run: |
-          npx remotion render MdMK out/MdMK_final.mp4 \
-            --codec=h264 --audio-codec=aac --crf=18 --overwrite
+          set -o pipefail
+          npx remotion render "$ENTRY" MdMK out/MdMK_final_HD_720x1280.mp4 \
+            --codec=h264 --audio-codec=aac --crf=18 --jpeg-quality=95 --overwrite 2>&1 | tee out/logs/render_hd.log
 
-      - name: "final: আউটপুট যাচাই (ffprobe + লাউডনেস/peak)"
-        if: ${{ inputs.mode == 'final' }}
+      - name: "final: Full HD (1080×1920)"
+        id: r_fhd
+        if: ${{ inputs.mode == 'final' && (inputs.versions == 'all' || inputs.versions == 'hd+fullhd') }}
+        continue-on-error: true      # ব্যর্থ হলেও HD রিলিজ হবে
+        timeout-minutes: 120
         run: |
-          set -e
-          F=out/MdMK_final.mp4
+          set -o pipefail
+          npx remotion render "$ENTRY" MdMK out/MdMK_final_FullHD_1080x1920.mp4 \
+            --scale=1.5 --codec=h264 --audio-codec=aac --crf=18 --jpeg-quality=95 --overwrite 2>&1 | tee out/logs/render_fhd.log
+
+      - name: "final: 4K (2160×3840)"
+        id: r_4k
+        if: ${{ inputs.mode == 'final' && inputs.versions == 'all' }}
+        continue-on-error: true      # মেমরি/সময়ে আটকালেও HD ও Full HD রিলিজ হবে
+        timeout-minutes: 150
+        run: |
+          set -o pipefail
+          npx remotion render "$ENTRY" MdMK out/MdMK_final_4K_2160x3840.mp4 \
+            --scale=3 --concurrency=2 --codec=h264 --audio-codec=aac --crf=18 --jpeg-quality=95 --overwrite 2>&1 | tee out/logs/render_4k.log
+
+      - name: "final: আউটপুট যাচাই (প্রতিটি সংস্করণ: মাপ, দৈর্ঘ্য, অডিও, peak)"
+        if: ${{ inputs.mode == 'final' }}
+        env:
+          OUT_FHD: ${{ steps.r_fhd.outcome }}
+          OUT_4K: ${{ steps.r_4k.outcome }}
+        run: |
+          set -o pipefail
           R=out/final_report.txt
-          {
-            echo "== ffprobe =="
-            ffprobe -v error -show_entries format=duration,size:stream=codec_name,codec_type,width,height,r_frame_rate,channels,sample_rate -of default=nw=1 "$F"
-          } | tee "$R"
+          : > "$R"
+          echo "রেন্ডার ফল — HD: ${{ steps.r_hd.outcome }}, Full HD: ${OUT_FHD:-skipped}, 4K: ${OUT_4K:-skipped}" | tee -a "$R"
 
-          DUR=$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$F")
-          W=$(ffprobe -v error -select_streams v:0 -show_entries stream=width -of csv=p=0 "$F")
-          H=$(ffprobe -v error -select_streams v:0 -show_entries stream=height -of csv=p=0 "$F")
-          A=$(ffprobe -v error -select_streams a:0 -show_entries stream=codec_name -of csv=p=0 "$F")
-          [ "$W" = "720" ] && [ "$H" = "1280" ] || { echo "রেজুলিউশন ভুল: ${W}x${H}" | tee -a "$R"; exit 1; }
-          [ -n "$A" ] || { echo "অডিও স্ট্রিম নেই" | tee -a "$R"; exit 1; }
-          awk -v d="$DUR" 'BEGIN{ if (d<81.0 || d>81.7) { print "দৈর্ঘ্য অস্বাভাবিক: " d; exit 1 } }' | tee -a "$R"
+          verify() {   # $1=ফাইল $2=প্রস্থ $3=উচ্চতা $4=লেবেল
+            local F="$1" EW="$2" EH="$3" L="$4"
+            echo "" | tee -a "$R"
+            echo "== $L ($F) ==" | tee -a "$R"
+            [ -f "$F" ] || { echo "ফাইল নেই" | tee -a "$R"; return 1; }
+            ffprobe -v error -show_entries format=duration,size:stream=codec_name,codec_type,width,height,r_frame_rate,channels,sample_rate -of default=nw=1 "$F" | tee -a "$R"
+            local DUR W H A
+            DUR=$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$F")
+            W=$(ffprobe -v error -select_streams v:0 -show_entries stream=width -of csv=p=0 "$F")
+            H=$(ffprobe -v error -select_streams v:0 -show_entries stream=height -of csv=p=0 "$F")
+            A=$(ffprobe -v error -select_streams a:0 -show_entries stream=codec_name -of csv=p=0 "$F")
+            [ "$W" = "$EW" ] && [ "$H" = "$EH" ] || { echo "রেজুলিউশন ভুল: ${W}x${H} (চাই ${EW}x${EH})" | tee -a "$R"; return 1; }
+            [ -n "$A" ] || { echo "অডিও স্ট্রিম নেই" | tee -a "$R"; return 1; }
+            awk -v d="$DUR" 'BEGIN{ exit (d<81.0 || d>81.7) }' || { echo "দৈর্ঘ্য অস্বাভাবিক: $DUR" | tee -a "$R"; return 1; }
+            ffmpeg -nostats -i "$F" -vn -af ebur128=peak=true -f null - 2> "out/ebur_${L}.txt" || true
+            sed -n '/Summary:/,$p' "out/ebur_${L}.txt" | tee -a "$R"
+            local TP
+            TP=$(awk '/True peak:/{f=1} f&&/Peak:/{print $2; exit}' "out/ebur_${L}.txt")
+            echo "true peak = ${TP} dBFS" | tee -a "$R"
+            awk -v p="$TP" 'BEGIN{ exit (p+0 > -1.0) }' || { echo "ক্লিপিং ঝুঁকি: true peak $TP > -1.0" | tee -a "$R"; return 1; }
+            ls -la "$F" | tee -a "$R"
+            return 0
+          }
 
-          echo "== ebur128 ==" | tee -a "$R"
-          ffmpeg -nostats -i "$F" -vn -af ebur128=peak=true -f null - 2> out/ebur.txt || true
-          sed -n '/Summary:/,$p' out/ebur.txt | tee -a "$R"
-          TP=$(awk '/True peak:/{f=1} f&&/Peak:/{print $2; exit}' out/ebur.txt)
-          echo "true peak = ${TP} dBFS" | tee -a "$R"
-          awk -v p="$TP" 'BEGIN{ if (p+0 > -1.0) { print "ক্লিপিং ঝুঁকি: true peak " p " > -1.0"; exit 1 } }' | tee -a "$R"
-          ls -la "$F" | tee -a "$R"
+          # HD বাধ্যতামূলক — ব্যর্থ হলে পুরো জব ফেল
+          verify out/MdMK_final_HD_720x1280.mp4 720 1280 HD || exit 1
+
+          # Full HD ও 4K ঐচ্ছিক — ব্যর্থ বা অসম্পূর্ণ হলে ফাইল বাদ দিয়ে সতর্কতা, বাকিগুলো রিলিজ হবে
+          if [ "$VERSIONS" != "hd" ]; then
+            verify out/MdMK_final_FullHD_1080x1920.mp4 1080 1920 FullHD || { rm -f out/MdMK_final_FullHD_1080x1920.mp4; echo "::warning title=Full HD::Full HD সংস্করণ বাদ পড়ল — final_report.txt দেখুন"; }
+          fi
+          if [ "$VERSIONS" = "all" ]; then
+            verify out/MdMK_final_4K_2160x3840.mp4 2160 3840 4K || { rm -f out/MdMK_final_4K_2160x3840.mp4; echo "::warning title=4K::4K সংস্করণ বাদ পড়ল (মেমরি/সময়?) — final_report.txt ও render_4k.log দেখুন"; }
+          fi
 
       # ───────── আপলোড ─────────
       - name: Artifact আপলোড
@@ -154,24 +231,51 @@ jobs:
           path: |
             out/check/
             out/preview/
-            out/MdMK_final.mp4
+            out/MdMK_final_*.mp4
             out/final_report.txt
             out/sfx_report.txt
             out/aligned_head.txt
+            out/logs/
           if-no-files-found: warn
           retention-days: 14
 
-      - name: Release (শুধু final)
+      - name: Release (শুধু final) — HD / Full HD / 4K
         if: ${{ inputs.mode == 'final' && success() }}
         uses: softprops/action-gh-release@v2
         with:
           tag_name: mdmk-final-${{ github.run_number }}
           name: MdMK final #${{ github.run_number }}
-          body: "ফাইনাল রেন্ডার (৭২০×১২৮০, ২৫ fps, H.264 + AAC)। রিপোর্ট: final_report.txt, sfx_report.txt"
+          body: |
+            MdMK ফাইনাল রেন্ডার — পোর্ট্রেট ৯:১৬, ২৫ fps, H.264 + AAC।
+
+            সংস্করণ (যেগুলো সফলভাবে তৈরি হয়েছে শুধু সেগুলোই নিচের ফাইলে থাকবে):
+            • HD — 720×1280 — MdMK_final_HD_720x1280.mp4
+            • Full HD — 1080×1920 — MdMK_final_FullHD_1080x1920.mp4
+            • 4K — 2160×3840 — MdMK_final_4K_2160x3840.mp4
+
+            নোট: সোর্স ভিডিও ৩৬০×৬৪০, তাই Full HD/4K-তে ভিডিও-অংশ আপস্কেল হয়ে নরম দেখায়; লেখা ও গ্রাফিক্স পূর্ণ মাপে ধারালো।
+            WhatsApp/Facebook-এর জন্য সাধারণত HD বা Full HD যথেষ্ট; 4K ফাইল অনেক বড়।
+            রিপোর্ট: final_report.txt (মাপ, দৈর্ঘ্য, peak), sfx_report.txt (SFX cue)
           files: |
-            out/MdMK_final.mp4
+            out/MdMK_final_HD_720x1280.mp4
+            out/MdMK_final_FullHD_1080x1920.mp4
+            out/MdMK_final_4K_2160x3840.mp4
             out/final_report.txt
             out/sfx_report.txt
+          fail_on_unmatched_files: false
+
+      # ───────── ফেল হলে: সারাংশে লগের শেষ অংশ + লগ আপলোড ─────────
+      - name: ব্যর্থ হলে লগের শেষ অংশ (Job summary)
+        if: ${{ failure() }}
+        run: |
+          {
+            echo "## ❌ ব্যর্থ — লগের শেষ অংশ"
+            for f in out/logs/*.log; do
+              [ -f "$f" ] || continue
+              echo ""; echo "### $f"; echo '```'; tail -n 40 "$f"; echo '```'
+            done
+            [ -f out/final_report.txt ] && { echo ""; echo "### final_report.txt"; echo '```'; tail -n 40 out/final_report.txt; echo '```'; }
+          } >> "$GITHUB_STEP_SUMMARY" || true
 
       - name: ব্যর্থ হলে লগ আপলোড
         if: ${{ failure() }}
@@ -179,7 +283,9 @@ jobs:
         with:
           name: render-failure-logs
           path: |
-            out/ebur.txt
+            out/logs/
+            out/ebur_*.txt
+            out/final_report.txt
             out/sfx_report.txt
             out/aligned_head.txt
             npm-debug.log
