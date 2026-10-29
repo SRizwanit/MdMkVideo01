@@ -1,0 +1,120 @@
+name: Apply phase 5-6 (motion graphics, dua)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Unpack project files
+        run: |
+          cat > payload.b64 <<'PAYLOAD'
+          H4sIAAAAAAAAA+08a3Mb13X+rF9xizgZQAYXuyAeJCRQlSkpVmM9RsyE7bAcawEsyLVALLJYilQQ
+          zNRuY6XxVHKcKp66nnHTSKCsJ5vOqNJMJ/rQP0F+4+SX5JxzH3t3sXxZr0m91zaxex/nPs773LM2
+          Cm+98mJCqZbL9Asl/kvPVrlYNStm0SpZUF+tmtW3WPnVL+2tt1b7ge0z9pbvecFe/fZr/wstRqHv
+          N18xDRwa/5ZZqlZS/L+OwvHf9FZ6XtfpBv1XQQqHx3+xUplM8f86yhj+f+jbvWW32TeC/vpLmgMR
+          XCmVdsF/sVg2SzH8l60K8L/5kubfs3zH8e8C4v2AXXLsZsDavrfCMj4+Z44dEU0DdrLR9zqrgXPG
+          7XTyzO0Gjt/zOnbg5Nlq35ld9X2gnDO+vcIrfuK2HG/W67bdJTZUMFe8wPW6OtiOZ7fOeN1Adfpr
+          2auw5HlLHWei7SFFnlxxfVcfOK9GGEah4zYKTbuHw/p6p3e99Tz7ydlTpy/Ee/8MKD3SNVh2Vhy9
+          F1XoPeacpTybs9sOQW10aZ9QGQ4qiFYYdaQJS8FRuPwz9orbuVZjtm833KbYbl3tPZvpev6K3cnk
+          of+a4y4tB/0aW8hUTTOzmGf91Ubf4TUcAPTLwMm73cwiG+ZgrsLRo2xn9MnOaHNn9GBn9BxeRjsb
+          n+6MHu+M/ndn9Ef+fn1n9Ft42Rndhmeo+pJe7sLTXXg6wdp2p+/A2y2Es/ERVt+5De/3djb+hUDf
+          ogFPCNImn/ALDuoBB8X/FnZGz2R/HP+Yqvls18fgHy0ccdbphPmJzb13Yf6Dk5dOvnt2Fo4o8Fcd
+          3GCBr/I5wf0jrmk0UvPeogU+Zdmd0X2xVlziI7XQX+BgnPEe33+uRtvH5mdUw4Fi1/+gSW6p6b7k
+          G/wNk9M8lvM/IaBihn+mKpz32D49Q7CCRN49ef5UDSkVtjtg62aNmYZZzrN1C5+m4eka1ZUn4Ynq
+          KlaRDY+J4WcuXPhxfLilRsvB03LsdBWHirE94OUaZ3tjdm7uou/1HD9wnT7COsJYw25eWfK91W6r
+          Bty71LCzU/lJM18s5k1jaiqXyWMfz285PrQXe+sMRITbYtRz2oJ+1bxVMaFzuax3vmS33FWg52KF
+          163PLdstbw1gmKwCUIol+ENAYCz+Y5T4cJ2XiD2NsEa2zxP/1BgwD1Y1vY6Hq/teu90GGOHeZ12/
+          2XHk7s/MHh+w5rLbaYEYk5X097zXco6xvvsz50SNdVdXGo5/jEOF937gu10QADNwYFk8MQkCp8Yx
+          UF+dUutAgqZlN+FMA1hNjtVnWBaaj7fcq/ADg4JrHac+GNALY2tuK1iuEai8qFoWG9TroueaKZvf
+          z6gmDYe0CNmgTsZqWEWQNLK+5fZ7HRtOONPuOOuq2u64S92zgbOCEzQdlP+q7UPQn277Goj7ABrG
+          2xEvc7Bcvmh2FGm4qDfuhVTZJ4ZYqoYFzi0DCq4AacvKjtt13hN9LV45HMLPDD0OJIaw6ngBjn3m
+          iBKhGxsGIwH3kRRRm/TO5Q4KVC7iHqHU4mT0YzfoOLO23wopCWmBEEsEIdQAHUieeT276QbXSPxz
+          7ZGF2RnznWDV7xIpwLKEGkHWqA9QPgwVXex+1hJ2HoSm3e23QaXU2OV+0+442bcHwPnsHRQNcPrn
+          7GDZWHG7WbEoC+RNbpi7DOc0Iw4R6TGc0zCMHqn9nt1qAcHDrJYJPDoJjAoTB856cBLJI1yNBioO
+          LCSGUiUfxZZRBGkn6JKTwhXnGoICxQECnqTqbZKkgIevlMx+KrQJNnME3RaY3W8FxdLYCtQ5orSc
+          4pMrDXgHcb+zATL9a65m95taezkurQN8BaQPFdXdNQjS6GNU0FJzTJDKBMK7B6dKygzI72uk0Z2N
+          B3z+DCmmDCnir8JlZULqnEU5M7vs9iJyrmM3nI4UXsfYVbuz6oSyreUQ90dEXYKkIyDIXjQcH2ig
+          knVSuulM0PGAGvN78AKBIIbgQ65CE1ErCbCsZnVmBawFE+i3tMgfaCmLaEUBRYILQz3fd9rEJh17
+          pQfEqrVc4kgXTWBKJbCilMtjkpkprlAVu0jOvWUnY0s2oMcqhRUhl02hNkSViA9WsacDVWSq2FkJ
+          AP2cxGHTOS2Gv4O9DyKcJlmYTJEwKSYKEwtliQRAolcKXzhPrnZJD9QHVXPIiaU+oB9NZgwa3ezV
+          3FCxER+nwPR7djeJoSeJYwdEnMPjBewmuU8wouA8jT8uoekRNQN6gKgX45OFRckrHB7TdP23E+9E
+          JsWikqwDgmus2L1stqmA80OWbM9AfsLZGvw82ABItjlkBQ4gl+M6UImlUA9+Y3DjGsTP/3AvYgLf
+          Q6uWy7rNWrII5Gbux0AjSRrT67nNyIF3w1MMUJ3GpQ0DV4sa2LhIeXV6FXl4AuMCwW66lZ6Rf/4W
+          eCJrsYlxZsjlgEUmKuawt34Q/RqXIMmSQ0iMqXxMUqA65pLCJL0sjEfQ1WAPRjWyYCfksm5uGGcv
+          vr7w7TAK1CpHNGi1zFXoHlSiFnHAOUvFg5oNA6KaOOTDK+h7xt7uNTien5FPB5v7d+5A5kKCP0lO
+          e4Ti0WIKBUuftsVZQNE8dslze/l1Un3cmozRrDrEMW2YoA+THMhKHkimhD7ddDWXifTdxZG0SpP5
+          ogXeZLkMoyrRQRES1xtCzkCmKJoR1Ymq2neaGC7CdQWdSFuCOas3Jwd04j1Cd0dviZJttRzZyrIb
+          OHNw6jAu0/XWQDlH5o0QeGvVjiw52eIvkZY2K0lqWlfSSk2Hihr0C57D8DBscl/YsSqgAgbtkwkZ
+          abm1M/oD8Qa347/WrNRlp3kFhdxuWiGmiCOaV1cS3Cbl7Qlcc2jzM3CbV6A1yewEuWcVd7OnDmFy
+          vjmLcyrJ4ERb00KOqfD/tEGa0K++UStUqd2/21vtWlOkdQ9kiZYqyhJVGkTXl/2rS1zW1DPFqYyI
+          wfDnq66zBtxQz5jMBH0I/2ZYG7BUBybuOhmkWu+KU898z6wUK5YtK+Y5tJJ8fx9EQ9Pu1TMkLvXa
+          Dz23K6sj+rEH22ateuZcCWjRKLP3LRM2zd4vmqwiAZyy+8u279vXYLGRSq/d7jtBfVBE6UCniNSe
+          U9YhZ3XYd6gpE2zwg5jaXDg84CalCM9qhiQ+/24CXdew9otQOLwL2H51wRWMnn774MpBKXHyoPZf
+          lBFFeEX3bvJ7xmSni7mYnRf1kyIqhGKQ2PvcKXbuRwKBgIebMqiCiLjDw993ZJwdbbjDqISHhnaB
+          gCbTF1qA/umEjOBvhvi+6HtLvtPv74nyNt4zcSzrN09ZTXYPWGvVt1HFn+1SY1/ShXY1pQ/oNQOc
+          iYMujI0miWKa+9CTiMDz+Lulou8i/G7BcYfYGMckmjjyP9OwpiLYjJKMMHwuvz2AdQ+/fzmv4sLC
+          FoqA161iyeBJSIvcxMhL4D0xEaA3h/cFC9wpRbUN+7ZrrAw/Dfip5qVXR2EsTlV0J/Wfwi4gEuMW
+          A15QwabzIbAiB1YlYJWyDuzpuBwhiH9geF30FVHrbaA6Ji5n0PjY4L2jc0zSHAgc5piKzBG/R7uH
+          k9BLFESJQExxENORPT8QHjC/forcm41oTQSd3lWg8QFt5ImYY3Gc6vTrWEUheBmJV5H1wXzWMnMG
+          ea8glUzwkIaAKqq3cobTbYFlaBkVXVSoSHaoAYBEHJD/SeBLEfCWAl+2IvURn1MEW3SbFkMY9cGC
+          VsXCwIse9kxyIDN5GZOxKnlpFZr5RDGX33WKTyiUfEtd0O05UUnNA0dQCreqH8g7/AZu3CHV17A4
+          VC+7HPeAsxYP8ASRAI/ABQV3AqM7VFgJDDsZLYHRiDQUhxFLgmIyrCugEeniM3efoxYBLZG/YABJ
+          Lla/tj2hLzQyj05B1VKEQOVKqxVJn1g5E0Hbce5Kk4dWz2zd3f5s67+3P9/+xfZnbGtj+5/gnxvb
+          v96+Ll63/gtftx5Sjxvbm9ufxBs+2/4VDs5II7AU2Wtst+MbqCaf9VQp3EF57x3oi75Jq/w127oD
+          64KlQuWv2Nbvt29sPYO2X25tbt9kuOXtf9y+wXDZ0OkG3/fnW4+2b0Lbza37sMXtX8IYWX0DquFt
+          awRndT/c6mRx760eV405hp5WpzNMFAPT0TNQQsacDM9gWhcCLxD7nIqYNihQpN+IlAtzE0/Xx7UM
+          t11QYhPv1gdmfPMRSEUNUoIS0cAYk3sCmtQARfSIBqGyJ4SSBiGqRjQQ03EODdW6htlEHWGVktFX
+          LIfoKyXJcCW5dUmaHOOTORqj55q8Lu4nrxeHB1JDVrGSIEUo48cYs/8KPBXIaPf6+p7Iw9h1NmmP
+          hmZTXPVy2+lN53C9SBnL/xMk9BLT//bJ/zNLk2Yllv9XwnTRNP/vNRQ9/w+DMk3fAaeW5DAGodHL
+          4s9aKl8sPXDO+emq0206sdTAfg9Ddi+WIkjpdmdOzp4WsPtOM+iDge1dXN8tq09kxO2XMZaUBjZB
+          Qv9TnrLFnZSPRPBS+Ck8/4C7G2EKguYtR17uC5dE5r1dx9uC8dwz1Ay8z3O8Q9j4iPsJT2NJDo+5
+          E81kRtn13HgCHefdSCy1ge9QeWzPHCfUwyeS88HCe38ARXf8eqITDtTv+902y4aoyjYkAnM5xoOZ
+          wbIPOqTrrLHTvu/52cvSLDg4PrAXnNP1Gnt78DdzF84bPDoM9gPOlxteJtd+mBReDS2Ontd3xS2A
+          LaQ6KCnDMJC4CM6B7+RgEIHVjJRIrtFuV9CgbGYDTN6LMF3WCvM6nyo3WdEdI0d2U5HbI3VJCw70
+          73mfGmeNP33yObCKtF6Ew8zB3I7lhRINjpGTsxQhJQSq3dd62g34bqSlQvQ4Fhk3r/omROnbvf0i
+          Ne1oVght8yiO0/q0ZJ8Vez0L1obWH06D9waToZ0UIBSiTBgZ7eFYLKg+aKFhds1bDUSUV3fBAZ0G
+          sM5VWLzPDR7sPxNSA1kYei8VkBEzx8NoGlaVm/qQJMVtTgU1zhifcju3IOMHMmcN//I82MgN/nOZ
+          I/uEpwE/EgnBcRIQac6AQrLZ5pwmPJvfJiS3P27hqAUQwQj8qLQedAMDffiEEzpm1fLi1EBMCmO4
+          OiJKhME1eSMEndEKxbVg3kfLXulRFNYCdx9dknaXApJWFYzVFRsfTaMKGxnqU6y7QeyuqM1V3QLu
+          aYJhiGLVx8sPK8/MF7wy4nPKgHc9jDtbL+HeJU+b0TlDHFg+cmCwG3WZhgO0AHxCNLHRRQJSl3pE
+          PXMksrPdnOE7IGObTrbw960CmAvZFrVndjZGlPAGJPwN5rdt3Mfkt42HOxtAuI8zC+cJFvRezP1l
+          W+BvtnD7Hw2oVzfH4b//sorgLqTff72GEuJffkQDnt9LnmM//6849v3XZGmylPp/r6MIV8u310J3
+          aqW1cuWDwAVrJwC1YJDR67SMD/tR5yz2cVXogQnhH1zrOWze81v0eYrbbTnrmvUYTYPCME7Y6ODF
+          lczxOBaBd9FecgjeGgAGbYzwFxb3g3CExl6y13ZbDkKLLecD8GAiAPUKNqbk5i9cOjUn14P6Do7U
+          QLDhSfaZ3ZeLWFjM8fD+Gg/vk+/E17Rm0AO6V/yUOBzubtEu1wy1Qqylza4ZYonojeWUj3H6/Km5
+          Dy6+d+nk3GlYVGFh587t/Inan/7hX/9q8e2CMjKfyPv5ETkNiZ8x8TsqMBm/qvEvu26Lz5nw7zMe
+          +cur3NFN3i7cbu6qcB/kAdmkPGPuy8jc45nwyjl+SC//hqDiJmpjFWxrJAu8isyCzY/Hi88lCh6j
+          vWpM5mpEOYgZ3XLt4bCwiS3QdVvHAdirvoZMXi+s3c5qfzlyHcq9XhhhdJzuUrAsXV3G4Rs9GJBV
+          FNtE20kgEp4XzEWOzTzHI1aFoMB4tBYpHsuNPyxNspP5kribO8RHIkCj7fmn7eYy0BVYg7uukP3g
+          B5KIYIbdppzB88vxDWfF9NiP9rMmK+hQuhghqvM1LLh4wyiWh/NqNGgEwArZNQMJO8d+/nOmzTtT
+          Zwp70JIlmLBQ/FVrXdNWFlkaPx+tQtivhIIEo/TiyR+enoMlh+SDw6J9Au+McG2yGu/TqWquR5+8
+          DhVfzsUkIMKeB4721kjw4Ho4xR3b1aFmofunroU5t4lvTwQj8qjRbzlz3tGv1MNq5fuPdH6SWR3k
+          LWJYKiHSgJ9KbowMssLvi2CEEbnDDqccY3z5qSkB+EYbLYMXcTaeP3v+1IX5uZp2XsR6hCcuKns6
+          SQsG9p2rshPQ3YSguwhRysZ3Io2ktbRAAbhHvcidXp4DP0E/6krELDJwAfVEQU/3wXqq42Sez38i
+          Sr8IGSCcBYezS0lF+19YRL0xTj9wFDKiUgv3gOEV2hfdoObIGcslCXmKATwS4ni0ybIYRpMJQJdJ
+          /VzO4wdHESTnIrEnDdwYLpFjIho2VxOWwIyUEdgq8PWmbaDvcuH2/7nWuR+9zBufaNnH/rcmK3H7
+          v2hOFlP7/3WUw///Hy6028Ey9GlRGI9MmcBtQpuz51XOLHcvNX9Bu3QUjXp/mYKWPEC26iNOOY3V
+          peTu1BR3TZDo8Z6DPnlnLexSYw3P6zh2d9y+x95aNFwNFvHtFp9cqafdU7aSsgBnxQfZjQ5U6Zl/
+          g8JRis5ufMwvknjo93f09zegtzE2BlJ49H9f0C/YBcKCx0DZXdHAo2gAZJTn/0cEMZ7s7Wd4jaRy
+          /aPIVRflICPqgxDR2QwJjJVeKZMLk5niCYoyGzGeneg1PnSawRmXAo/eVf7JsIASXsUr/IdVkoRU
+          zYCf+gl2nOO+MKMyVv6/3tenJS1pSUta0pKWtKQlLWlJS1rSkpa0pCUtaUlLWtKSlrSkJS1pSUta
+          0pKWtKQlLWlJS1rSkpa0pOW7Xf4M/cfrrQB4AAA=
+          PAYLOAD
+          base64 -d payload.b64 > payload.tgz
+          tar xzf payload.tgz
+          rm -f payload.b64 payload.tgz
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet && echo "কোনো পরিবর্তন নেই" || git commit -m "Phase 5-6: motion graphics and dua banner"
+          git push
