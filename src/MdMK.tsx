@@ -1,6 +1,7 @@
 import React from "react";
 import { AbsoluteFill, OffthreadVideo, staticFile } from "remotion";
 import { Caption } from "./components/Caption";
+import { Graphics } from "./components/Graphics";
 import { Debug } from "./components/Debug";
 
 export type MdMKProps = { debug: boolean };
@@ -13,6 +14,7 @@ export const MdMK: React.FC<MdMKProps> = ({ debug }) => {
         src={staticFile("MdMK.mp4")}
         style={{ width: "100%", height: "100%", objectFit: "cover" }}
       />
+      <Graphics />
       <Caption />
       {debug ? <Debug /> : null}
     </AbsoluteFill>

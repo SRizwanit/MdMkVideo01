@@ -49,3 +49,6 @@ export const WINDOWS: PageWindow[] = PAGES.map((p, i) => {
   const to = Math.min(p.end + 0.3, next ? next.start - 0.15 : Infinity, VIDEO.durationInFrames / VIDEO.fps);
   return { page: p, from, to: Math.max(to, from + 0.2) };
 });
+
+/** শব্দ নম্বর (JSON-এর `index`, ১ থেকে) ধরে শব্দ */
+export const W = (index: number): Word => WORDS[index - 1];
