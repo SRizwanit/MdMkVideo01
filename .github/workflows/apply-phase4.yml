@@ -1,0 +1,97 @@
+name: Apply phase 4 (Bangla captions)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Unpack project files
+        run: |
+          cat > payload.b64 <<'PAYLOAD'
+          H4sIAAAAAAAAA+1b/2/bxhXPz/krrlpSUAlNUbIl2bLlzI3jNUsTB/HQYDCMhJIomY1EaiQV2VYE
+          bAXWYCiKAevSYl2BomsipWmaGv0hSICi/WH/iNC/ZO+9O5JHyk6atU5XjBeYIu/Lu7v33r33uXcX
+          LXfsyJMOqVws0i+k5C+954uFsl7S9WIB65XL+dljrHj0Qzt2rOf5hsvYMddx/GfVe175LzRpOc+t
+          H7EOvLD883pRL6TyfxmJy9/fNjum5ntH0wcKuDQ3d5j887PlpPwLeVAXph/NcOLp/1z+VqfruD4b
+          sLZjNNYc22dD1nSdDsv82jU7jm85dq7lOK22OdOEUi/3umU3Nqy21eq5Vmbx+PFcjk1GDyejbyej
+          tyejr+EFvr+YjO5Pxu9NRp8wBRuwoEWWff/Hv0OF/cn4dlDnU2rMc/ah7J3J6EP4YEht/C6Uw9vT
+          yej9yeiryegb3sH9yei7yegxtf+I3u9C7h1O5njdsT2cE454zehY7V2YVTWcopKxHbdjtDMqGxxn
+          rG9arW3fq7DNTFHXITNThp8tFYq8Xs0zeVHNtFtG28LituFbNlYYZoEB5g5xkPdJCwm6QrpR70jK
+          N3f8Csv8ao1SBrMaVgdy3FbNUArFohr86VqxmKUKRt23bpq81er83Cp0Tuz+62T0AfCAIUeIUY9R
+          BMiLEReGEMNTZA5m/xO5wtgNcxeJFV87N7uiB8SA138ivsHzLtUGAg8m47cpEz4/i3UAZOpOzxZz
+          eU0a1RPSgA+o2lc4AGUyHk/GQO0TkJDKJuMH0SsU3Je+4A+mM/4cK2WRNT0DO5hfW51FZvEORqQO
+          Qgm4rvwlmOFHQolGn0HrmlG/0XCdbsDdebWgq/lSyNnh4vGfe939ryRu/+sOmAHbxPV9BH28uP8v
+          lErl1P+/jDQl/7NGF40+gIGdn6qPZ/v/PIi7nJA/wL/U/7+UJPz/FRN8jXD8Lr6Daw+hwUrNc9o9
+          31yz2m2VbZh/6Jl23VSZZfum23XAHcKH13Utu6Wynmee7bku6NKaa3RMynjTapjOWcduWq0QXgTo
+          Qu7o6vlLq+tXN1R21XEbYU1Ny7WtWq7OFdOTG1wAbKGyG/Bcbybrg7PrA5lY/bMrl393fv2Synzn
+          8k6ywR6sgFht7sylWpSBoIc7+wsw3Gtn199Yv1IBBtahsyU+IM9HXiwLHEBelyNseFUjB8rz6ANz
+          7V5nKo/8IM+DV/JconNk0ZuW2a9w2WlrZ5cGDL4wf5H5egXp1UyXDXEcCpTBrHU2zLLqMg2Lk2mi
+          kKBCQmwKIJugCuCorkcAKi5KuY4PpUD9tKCXwyZRKQoIKnA5KX0Nfs0dqbXlrRDSQSJsucr6Gi5K
+          n736KnwvwacJ7U8zXdOLUSOqYjYSbYA/jKOFGCZ6LIEcxA2P6O2phHIQP94jDHqHY6onlP2AnvsE
+          Md8O++43oduLhr+tuSCphqIEI54BLmTZKZy+NL+u04X6fIWAJIhHFcGqGSCmYn0VKwNbK8DwhtHp
+          Qt0KyxdQm6xmE1QTYGgBcAzrGPgKWAZkMpR6qcHqqgpeV6ssA/LPsFu3pBxSqww7A40LBYY08gWJ
+          oXWjjSIIpXGG5YHrSPYUTQGGQ+zl1etO23GDDs9Ii2ETc7agtkSIqzDHsyzQaITEUfeAhoHaK4FY
+          QfavCNK6Vp4POyfZPiW0d5sDXXr5hOO/mWAvsl85BBZz+T+ht3tc0rzFp4grCSYLdhrB7CCLwTAk
+          c6c0uW3bRNmBMpxm5S34AuHkdR3eBgym5hq88htmE9FyvQ1CBSgrlVzBjUdYBMKknkAuNFPX9Huu
+          zRTKXPK6hk1vsCvxd9tmdTAQnwyE41loGxHvmrg7uWnS/oGnhuV12wYif8tuW7Y5U2s79RtShY7h
+          tixsrLOF7o5UQCKOPp2uUbd8IASiinJhNrbXhA1VhV0nFVJODOh3mL1+QK111+KdFfWTrKyflLpD
+          fdjYNhpOP6Y713Wmg+Z3d9iJAY1oOD+vQtYs5OR1eBDG11X6p5Wz1xlN5bDisMPhkF6WxedAaJsS
+          jkfm+YF8T/DeEH5SmhKmNslfj2fWHN93gGWlePa2yVUiPxfP71sNfxsYfGIAajk8eT1JzG2Y7hWj
+          YfXAMpQThbAZapGZovbJdTosFhPU9s6jea6wmbycL7iFKRewLMvQy7TbQdGgT2uafy7lkH1YFWxU
+          5LcuGy1zym9ZvEfusWTvtQge0J1yZVQd3ZmKxUfl07owUqggQMkmdbqlYW5Ux0SbMGXbn2HPizF7
+          nl+Q7HkpYc/NHQvd6kFmB2c9w4o0fTQ8eVgPP8LsRH2KJR54t45lK3L/NF1h6AKDt5VVaagSld3E
+          sJPN8rh+t7Ky63lOC11bmKO+DrCMDevmYYZRTOdgY0Xv2NvvwWLtDrs7WRbZr5jxkpcQd11BhEGq
+          E1uDhfmopGs0GiT8TL4E5qgwhw89Zmhx1ay0rRZakTrNXSqM4khB7/HIUlTrqrAeZV2PF2xYewA4
+          SlIuOoLXA2OjzRVlb7BzlVubDDizk4eaS1wIGiFsrWN0AQLRKpSsZ4BQEQBXBwL1DVkf3oewdqsD
+          Xx9KtiQbmA2Qp2Q1cqdOsel41J0wyoRl6Ojv83jh7ViAiAcbOfgbwzOMHH4URhv5935AacTDaxwp
+          3KEn0mOncvFAn9gmR1YMLVPCDv0QI7OH+BU2I4rYmlBRXL/l7VfALUnpD/RLz/NK3Cftafgr5/sY
+          NNvTfFmzQ++zp9GLXBL4qz2Nv8llEe5ots2dWPcG6vp53+x4Byk8Y2/10EjuArt8k0KNU3VCd7Qc
+          Zg2EpRbqaNmwQw0lEqTAQzidOIKH6hrlRtg93gRNbmAVjR0FLG6ite+ItmCZkVKMRkyiQVoKttJ8
+          hVh8p1kd4HOIHRoowvM2eS+vOoCcIQOOOj2/mrFht5pZjtEDioF35S6SaOJKC2ZHVAWhXLzxUi4Y
+          jZwvTWKYDVgeLlF8TWonX7Y/d1gjTT8w8fgfhj+Oro8Xj//mC0U9jf++jBTJP4iv/fTHwM85/50t
+          Q1lc/rNzKP80/nv0SQQ7XaMfhTk7jc6Na74FPseHDYJGztpsaG958Wjtm+dXz61H4dEwfhoAJX+3
+          a/JIbpVNb/HoOJQHShd5LC8qNBFoB3u+xRi9y3xTNmCEPHm4c3PreRSOU9srRv+w4SC1xHCueWY9
+          RlDOIKIxQHh1/crqRjAeBIPAUoLHESc9ZnjBIDa3sjHYjBhFjEkg5ejQmNOh82g+SxFtxAFhLk2W
+          gqQ8Z5jNhtvtc5dWN65dfv3KysY5GFRuc3LvrnqmArj4la0TuRBeS4Gy79/526H4+gGh5o8rdPA8
+          uiuQND6fUv37Ko+mcUCN5SK6xiNu++J0GU9xxaltrO/pI2QBviejL+njH0gqicRrPavdQLXwkOu4
+          e0HNgHfYMLYMDLzq2my2QpqDkpEROu5hvKiIgSYdR3AMtDHsEAqT5wvs2O552zG0D5JrMgVaAJy2
+          W/52NkScRF/rQgMl1FiopwaChPdNfYtLU+VyxKyIFGDJ/BaFv4chFKsTEuVDAlgGzyG+kgLC1tA9
+          Z9S3Qa/i6Dc+QoyuRiHrw7pcRv5l+YQV0T3Wo/n0gwxiig2KirESHMOmxU4DicWwX0kHNR+WgsLD
+          RFkMTkv9LldZKD0oUYgmDBR/w7H2pZHFhsb5I2UIyE0i4FvJmNpcXvnNuQ0YcqQ+yvRtDmdNhJIU
+          ae0TVyXwD0WA/MkaanzvMGWxrsKKdvpkeHA8XOMWyXJKJtGJWZdw4/teuJr4hYloIfIrL+IqSOzw
+          Isp+EKy7kbye7gX724dYX6HTDtE6vJYDa2YyHml0V+MLfiByW4vdz4m6nFr4dJfktiDwudR6zO/o
+          TC1jsXmrSPyipUdy4qayK6u0WMCueTOoBHo3I/QuppRB4elYobwFxA2drrJuqGW6hoE6In6GfqIT
+          KDo3kU++HDlY1g0rzqq8/zNx/UXKQOG83bRsjEwJvUlu9lguplChNgf6A6zACaikNOEcfIdn0wAK
+          WVQjXBbP8v8R/gvOS186/ivMzham8B/e/0jx39Gn/+YKWBhWCx03D6YRbGHKbzfWL81QFG2fXae8
+          69lo4asscO3cQGA9sENTt9gACjyEn49Dq4XDlCzYAUeAPJonLr5Rk3t3Y6b4Aj+HzoCqZ9it8Dz0
+          VnBWyjKNnhGd77uGTWBTMQLDrLJazAusuK6xS5EV8O/cjVVYDZa5gdaGDVWmXAuMFmZZETDrEDSx
+          zT4s3+5SQB5HuIyOSJi3HhowxWqEUHVzS2U3KlSPqEJR5PN5R0BZ80xfsaAmIUGgomzmMZSOsXSa
+          fXaRH6TeDs657wrLLxjOz0hRH7gzuM8lhp4ieZT+IDgeF/cw4ZnlXc5Bl3OAwubmVbYwj2ejBRxD
+          CR6FAo6E81+M5YfcFQTNG3HaxbzKimWVlcBOzxeRGIowmNZBQ6e3R4F27ydvHQqyMNwikCyWkpx6
+          JE6MSb/+JftaHjsGd/stp1GCaZdgpqXZJI0nErAN7r4ioa9ZjlRdrL936TPk65jXF8SBj6WFJOHY
+          zUje9lP+Qa1IkZUyzG1+LqtyLT+w6eGXKqnzBWD6AsxsoZgcAD9Cf8S7/hbFJGOXhzTLx0IRC6QA
+          5TiJi6vs4oUE/BL3enAByLu1LFd/WK6Avkzwo3gJhKt9C9VeXC75uS3rLyNx/3+xcfHCT3njL56e
+          d/+/UEze/yvos6n/fynpxe//rTeb/jbUadCJFm1lfasOZeYz7/aJAzMpXjR96VSuv2rWeq2Da1NR
+          MtCEKnzZdboe7bIaWAVcseO0TcOejtZgbekGQthYXDBo8M7DzcbhB3Lh4Zt0SHwWL6lUWKbWhqwM
+          Gw7DM9PcKX73DP+nBI9qfEeWGp7v43X5z9EFjkf//pB+wX6KeMz4S3SBvIC84RiIjBBK/TlsT5Dp
+          aRY2VuE5TVxU0XmhW68OIrEpGVr+ne5cJhtd8gjn1Y8dBocnfsG3U3vLrPtrFp3SOTdNNxOdzYVH
+          TEuB9MOcAWfxGbbEBZ1bjt0lSc+V0pSmNKUpTWlKU5rSlKY0pSlNaUpTmtKUpjSlKU1p+hHpP51F
+          k+oAUAAA
+          PAYLOAD
+          base64 -d payload.b64 > payload.tgz
+          tar xzf payload.tgz
+          rm -f payload.b64 payload.tgz src/components/BasicCaption.tsx
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet && echo "কোনো পরিবর্তন নেই" || git commit -m "Phase 4: Bangla captions with word highlight"
+          git push
