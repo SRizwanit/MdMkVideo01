@@ -94,9 +94,15 @@ res["loudness"] = dict(lufs=lufs[-1] if lufs else None, peak=peak[-1] if peak el
 # 5. ফ্রেম + চেহারার জোন ----------------------------------------------------------
 log("\n== ৫. চেহারার নিরাপদ জোন ==")
 cap = cv2.VideoCapture(video)
-cas = [c for c in (cv2.CascadeClassifier(cv2.data.haarcascades+f) for f in
-       ("haarcascade_frontalface_alt2.xml","haarcascade_frontalface_default.xml","haarcascade_profileface.xml")) if not c.empty()]
-if not cas: log("⚠️ Haar মডেল লোড হয়নি → ফলব্যাক জোন ব্যবহার হবে")
+cas = []
+try:
+    base = cv2.data.haarcascades
+    for f in ("haarcascade_frontalface_alt2.xml","haarcascade_frontalface_default.xml","haarcascade_profileface.xml"):
+        c = cv2.CascadeClassifier(base+f)
+        if not c.empty(): cas.append(c)
+except Exception as e:
+    log(f"⚠️ Haar লোড ব্যর্থ ({type(e).__name__})")
+if not cas: log("⚠️ Haar মডেল পাওয়া যায়নি → ফলব্যাক জোন ব্যবহার হবে")
 boxes, step = [], max(1,int(fps*0.5)); fi = 0
 while True:
     ok, fr = cap.read()
