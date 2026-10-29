@@ -46,7 +46,7 @@ jobs:
       - name: "check — স্টিল ছবি (চেহারা-জোনসহ)"
         if: ${{ inputs.mode == 'check' }}
         run: |
-          for f in 30 150 400 800 1100 1500 1800 2000; do
+          for f in 30 190 629 788 880 984 1118 1270 1369 1767 1899 2015; do
             npx remotion still src/index.ts MdMK out/still_$f.png --frame=$f --props='{"debug":true}'
           done
 
