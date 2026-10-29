@@ -1,64 +1,173 @@
 name: Render MdMK
 
+# মোড:
+#   check   → ১২টি স্টিল ফ্রেম (render-check আর্টিফ্যাক্ট) — চেহারা-ফ্রি ও লেআউট দেখার জন্য
+#   preview → ৪টি স্টিল + ছোট ক্লিপ (২৬–৩৮ সে., SFX সহ) — দ্রুত ও কম খরচ
+#   final   → পূর্ণ রেন্ডার out/MdMK_final.mp4 + যাচাই + Release
 on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "check = টাইপ-চেক + স্টিল ছবি | preview = প্রথম ১৫ সেকেন্ড | final = পূর্ণ ভিডিও"
-        required: true
-        default: check
+        description: "check / preview / final"
         type: choice
         options: [check, preview, final]
+        default: preview
+      sfx:
+        description: "SFX ট্র্যাক মেশাবেন? (false = শুধু কণ্ঠ)"
+        type: boolean
+        default: true
+
+concurrency:
+  group: render-mdmk
+  cancel-in-progress: false
+
+permissions:
+  contents: write   # Release বানাতে লাগবে (Settings → Actions → Workflow permissions = Read and write)
 
 jobs:
   render:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 45
+    env:
+      MODE: ${{ inputs.mode }}
+      FPS: 25
+      DURATION: "81.32"
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: npm
 
-      - name: Install system libraries for Chrome
+      - name: সিস্টেম প্যাকেজ (ffmpeg, python-numpy, ফন্ট, Chrome-এর লাইব্রেরি)
         run: |
-          sudo apt-get update -y
-          sudo apt-get install -y libnss3 libdbus-1-3 libatk1.0-0 libgbm-dev libxrandr2 libxkbcommon-dev \
-            libxfixes3 libxcomposite1 libxdamage1 libatk-bridge2.0-0 libpango-1.0-0 libcairo2 libcups2 fonts-noto-core
-          sudo apt-get install -y libasound2t64 || sudo apt-get install -y libasound2
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg python3-numpy fonts-noto-core \
+            libnss3 libdbus-1-3 libatk1.0-0 libatk-bridge2.0-0 libcups2 \
+            libxkbcommon0 libxcomposite1 libxdamage1 libxfixes3 libxrandr2 \
+            libgbm1 libasound2t64 || sudo apt-get install -y libasound2
 
-      - name: Install npm packages
-        run: npm install --no-audit --no-fund
+      - name: npm ci
+        run: npm ci
 
-      - name: Copy video to public/
+      - name: Chrome Headless Shell
+        run: npx remotion browser ensure
+
+      - name: ইনপুট ফাইল প্রস্তুত (public/ এ ভিডিও কপি)
         run: |
-          test -f src/MdMK.mp4 || { echo "::error::src/MdMK.mp4 নেই"; exit 1; }
+          set -e
+          test -f src/MdMK.mp4 || { echo "src/MdMK.mp4 নেই (কেস-সেনসিটিভ নাম!)"; exit 1; }
           mkdir -p public out
           cp src/MdMK.mp4 public/MdMK.mp4
 
-      - name: Type check
-        run: npm run typecheck
+      - name: SFX তৈরি (scripts/make_sfx.py)
+        run: |
+          set -e
+          WORDS=src/mdmk_timestamp.aligned.json
+          test -f "$WORDS" || { echo "$WORDS নেই"; exit 1; }
+          STRICT=""
+          [ "$MODE" = "final" ] && STRICT="--strict"
+          python3 scripts/make_sfx.py --words "$WORDS" --cues src/sfx_cues.json \
+            --duration "$DURATION" --out public/sfx_track.wav --sfx-dir public/sfx \
+            --report out/sfx_report.txt $STRICT
+          # SFX বন্ধ চাইলে নিঃশব্দ ট্র্যাক (Root.tsx-এর <Audio> যেন ফাইল খুঁজে পায়)
+          if [ "${{ inputs.sfx }}" != "true" ]; then
+            ffmpeg -y -f lavfi -i anullsrc=r=44100:cl=stereo -t "$DURATION" public/sfx_track.wav
+            echo "SFX বন্ধ — নিঃশব্দ ট্র্যাক" >> out/sfx_report.txt
+          fi
 
-      - name: Download browser
-        run: npx remotion browser ensure
-
-      - name: "check — স্টিল ছবি (চেহারা-জোনসহ)"
+      # ───────── check ─────────
+      - name: "check: ১২টি স্টিল"
         if: ${{ inputs.mode == 'check' }}
         run: |
-          for f in 30 190 700 800 900 1000 1100 1180 1300 1480 1790 1950; do
-            npx remotion still src/index.ts MdMK out/still_$f.png --frame=$f --props='{"debug":true}'
+          mkdir -p out/check
+          for s in 1 4 8 14 20 27 31 36 40 45 49 56; do
+            f=$((s * FPS))
+            npx remotion still MdMK "out/check/frame_$(printf '%03d' $s)s.png" --frame=$f
           done
 
-      - name: "preview — প্রথম ১৫ সেকেন্ড"
+      # ───────── preview ─────────
+      - name: "preview: স্টিল + ছোট ক্লিপ"
         if: ${{ inputs.mode == 'preview' }}
-        run: npx remotion render src/index.ts MdMK out/preview.mp4 --frames=0-374 --concurrency=2
+        run: |
+          mkdir -p out/preview
+          for s in 3 20 30 48; do
+            npx remotion still MdMK "out/preview/still_${s}s.png" --frame=$((s * FPS))
+          done
+          # ২৬ সে. → ৩৮ সে. (ফ্রেম ৬৫০–৯৫০): সুন্নাত ব্যাজ + দোয়া অংশ
+          npx remotion render MdMK out/preview/clip_26-38s.mp4 \
+            --frames=650-950 --codec=h264 --audio-codec=aac --crf=23 --overwrite
 
-      - name: "final — পূর্ণ ভিডিও"
+      # ───────── final ─────────
+      - name: "final: পূর্ণ রেন্ডার"
         if: ${{ inputs.mode == 'final' }}
-        run: npx remotion render src/index.ts MdMK out/MdMK_final.mp4 --concurrency=2
+        run: |
+          npx remotion render MdMK out/MdMK_final.mp4 \
+            --codec=h264 --audio-codec=aac --crf=18 --overwrite
 
-      - uses: actions/upload-artifact@v4
+      - name: "final: আউটপুট যাচাই (ffprobe + লাউডনেস/peak)"
+        if: ${{ inputs.mode == 'final' }}
+        run: |
+          set -e
+          F=out/MdMK_final.mp4
+          R=out/final_report.txt
+          {
+            echo "== ffprobe =="
+            ffprobe -v error -show_entries format=duration,size:stream=codec_name,codec_type,width,height,r_frame_rate,channels,sample_rate -of default=nw=1 "$F"
+          } | tee "$R"
+
+          DUR=$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$F")
+          W=$(ffprobe -v error -select_streams v:0 -show_entries stream=width -of csv=p=0 "$F")
+          H=$(ffprobe -v error -select_streams v:0 -show_entries stream=height -of csv=p=0 "$F")
+          A=$(ffprobe -v error -select_streams a:0 -show_entries stream=codec_name -of csv=p=0 "$F")
+          [ "$W" = "720" ] && [ "$H" = "1280" ] || { echo "রেজুলিউশন ভুল: ${W}x${H}" | tee -a "$R"; exit 1; }
+          [ -n "$A" ] || { echo "অডিও স্ট্রিম নেই" | tee -a "$R"; exit 1; }
+          awk -v d="$DUR" 'BEGIN{ if (d<81.0 || d>81.7) { print "দৈর্ঘ্য অস্বাভাবিক: " d; exit 1 } }' | tee -a "$R"
+
+          echo "== ebur128 ==" | tee -a "$R"
+          ffmpeg -nostats -i "$F" -vn -af ebur128=peak=true -f null - 2> out/ebur.txt || true
+          sed -n '/Summary:/,$p' out/ebur.txt | tee -a "$R"
+          TP=$(awk '/True peak:/{f=1} f&&/Peak:/{print $2; exit}' out/ebur.txt)
+          echo "true peak = ${TP} dBFS" | tee -a "$R"
+          awk -v p="$TP" 'BEGIN{ if (p+0 > -1.0) { print "ক্লিপিং ঝুঁকি: true peak " p " > -1.0"; exit 1 } }' | tee -a "$R"
+          ls -la "$F" | tee -a "$R"
+
+      # ───────── আপলোড ─────────
+      - name: Artifact আপলোড
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
         with:
           name: render-${{ inputs.mode }}
-          path: out/
+          path: |
+            out/check/
+            out/preview/
+            out/MdMK_final.mp4
+            out/final_report.txt
+            out/sfx_report.txt
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Release (শুধু final)
+        if: ${{ inputs.mode == 'final' && success() }}
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: mdmk-final-${{ github.run_number }}
+          name: MdMK final #${{ github.run_number }}
+          body: "ফাইনাল রেন্ডার (৭২০×১২৮০, ২৫ fps, H.264 + AAC)। রিপোর্ট: final_report.txt, sfx_report.txt"
+          files: |
+            out/MdMK_final.mp4
+            out/final_report.txt
+            out/sfx_report.txt
+
+      - name: ব্যর্থ হলে লগ আপলোড
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: render-failure-logs
+          path: |
+            out/ebur.txt
+            out/sfx_report.txt
+            npm-debug.log
+          if-no-files-found: ignore
+          retention-days: 7
