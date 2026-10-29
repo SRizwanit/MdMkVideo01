@@ -135,26 +135,60 @@ def write_wav(path, mono_or_stereo):
         w.writeframes(pcm.tobytes())
 
 
-def load_words(path):
+START_KEYS = ("start_sec", "start", "startTime", "start_time", "startSec", "begin", "from", "s", "start_ms")
+TEXT_KEYS = ("word", "text", "token", "w", "bn", "bangla", "transcript", "content", "label", "বাংলা")
+
+
+def _num(v):
+    return isinstance(v, (int, float)) and not isinstance(v, bool)
+
+
+def _walk(o):
+    """যেকোনো গভীরতার JSON থেকে (শব্দ, শুরু-সময়) তালিকা। ভিতরে শব্দ-স্তর থাকলে বাইরের অংশ (segment) বাদ।"""
+    found = []
+    if isinstance(o, dict):
+        for v in o.values():
+            found += _walk(v)
+        if found:
+            return found
+        key = next((k for k in START_KEYS if _num(o.get(k))), None)
+        if key is not None:
+            text = next((o[k] for k in TEXT_KEYS if isinstance(o.get(k), str)), None)
+            if text is None:
+                text = next((v for v in o.values() if isinstance(v, str)), None)
+            if text is not None:
+                t = float(o[key]) / (1000.0 if key.endswith("_ms") else 1.0)
+                return [(text.strip(PUNCT + " "), t)]
+    elif isinstance(o, list):
+        for v in o:
+            found += _walk(v)
+    return found
+
+
+def describe(d, limit=700):
+    """JSON-এর গঠনের ছোট বিবরণ (ডায়াগনস্টিক রিপোর্টের জন্য)"""
+    head = type(d).__name__
+    if isinstance(d, dict):
+        head += f" keys={list(d.keys())[:15]}"
+    elif isinstance(d, list):
+        head += f" len={len(d)}"
+    return head + "\nনমুনা: " + json.dumps(d, ensure_ascii=False)[:limit]
+
+
+def load_words(path, duration=None):
     p = Path(path)
     if not p.exists():
-        return []
-    d = json.loads(p.read_text(encoding="utf-8"))
-    if isinstance(d, dict):
-        for k in ("words", "segments", "data", "items"):
-            if isinstance(d.get(k), list):
-                d = d[k]
-                break
-    out = []
-    for w in d if isinstance(d, list) else []:
-        if not isinstance(w, dict):
-            continue
-        text = next((w[k] for k in ("word", "text", "token", "w") if isinstance(w.get(k), str)), None)
-        start = next((w[k] for k in ("start_sec", "start") if isinstance(w.get(k), (int, float))), None)
-        if text is None or start is None:
-            continue
-        out.append((text.strip(PUNCT + " "), float(start)))
-    return out
+        return [], "ফাইল নেই"
+    d = json.loads(p.read_text(encoding="utf-8-sig"))
+    words = _walk(d)
+    note = ""
+    if words and duration and max(t for _, t in words) > duration * 1.5:
+        words = [(w, t / 1000.0) for w, t in words]  # মিলিসেকেন্ড ধরে নেওয়া
+        note = "সময় মিলিসেকেন্ড মনে হয়েছে → সেকেন্ডে রূপান্তর"
+    if not words:
+        note = "কোনো শব্দ পড়া যায়নি। গঠন: " + describe(d)
+    words.sort(key=lambda x: x[1])
+    return words, note
 
 
 def resolve(cue, words):
@@ -198,13 +232,17 @@ def main():
     # ২) cue পড়া
     cues = json.loads(Path(a.cues).read_text(encoding="utf-8"))
     cues = cues["cues"] if isinstance(cues, dict) else cues
-    words = load_words(a.words)
+    words, wnote = load_words(a.words, a.duration)
 
     total = int(SR * a.duration)
     track = np.zeros(total)
     lines, missing = [], 0
     lines.append(f"words loaded: {len(words)} from {a.words}")
     lines.append(f"duration: {a.duration}s   base: {BASE_DB} dBFS   peak limit: {PEAK_LIMIT_DB} dBFS")
+    if wnote:
+        lines.append(wnote)
+    if words:
+        lines.append("প্রথম ১২ শব্দ: " + " | ".join(f"{w}@{t:.2f}" for w, t in words[:12]))
     lines.append("")
 
     for c in cues:
@@ -244,6 +282,10 @@ def main():
     print("\n".join(lines))
     print(f"\nলেখা হয়েছে: {a.out}")
 
+    uses_match = any("match" in c for c in cues)
+    if uses_match and not words:
+        print("ত্রুটি: টাইমস্ট্যাম্প JSON থেকে শব্দ পড়া যায়নি (exit 2)", file=sys.stderr)
+        sys.exit(2)
     if missing and a.strict:
         sys.exit(1)
 
