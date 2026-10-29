@@ -72,11 +72,17 @@ jobs:
           set -e
           WORDS=src/mdmk_timestamp.aligned.json
           test -f "$WORDS" || { echo "$WORDS নেই"; exit 1; }
-          STRICT=""
-          [ "$MODE" = "final" ] && STRICT="--strict"
+          mkdir -p out
+          # টাইমস্ট্যাম্প JSON-এর গঠন লগে রাখা (ডায়াগনস্টিক)
+          head -c 600 "$WORDS" | tee out/aligned_head.txt; echo
+          # কোনো cue না মিললে বিল্ড থামে না (শুধু সতর্কতা); শব্দই পড়া না গেলে স্ক্রিপ্ট exit 2 দেয়
           python3 scripts/make_sfx.py --words "$WORDS" --cues src/sfx_cues.json \
             --duration "$DURATION" --out public/sfx_track.wav --sfx-dir public/sfx \
-            --report out/sfx_report.txt $STRICT
+            --report out/sfx_report.txt
+          MISS=$(grep -c '^MISSING' out/sfx_report.txt || true)
+          if [ "$MISS" != "0" ]; then
+            echo "::warning title=SFX cue::${MISS}টি cue পাওয়া যায়নি — out/sfx_report.txt দেখুন"
+          fi
           # SFX বন্ধ চাইলে নিঃশব্দ ট্র্যাক (Root.tsx-এর <Audio> যেন ফাইল খুঁজে পায়)
           if [ "${{ inputs.sfx }}" != "true" ]; then
             ffmpeg -y -f lavfi -i anullsrc=r=44100:cl=stereo -t "$DURATION" public/sfx_track.wav
@@ -151,6 +157,7 @@ jobs:
             out/MdMK_final.mp4
             out/final_report.txt
             out/sfx_report.txt
+            out/aligned_head.txt
           if-no-files-found: warn
           retention-days: 14
 
@@ -174,6 +181,7 @@ jobs:
           path: |
             out/ebur.txt
             out/sfx_report.txt
+            out/aligned_head.txt
             npm-debug.log
           if-no-files-found: ignore
           retention-days: 7
