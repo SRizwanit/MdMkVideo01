@@ -194,10 +194,10 @@ jobs:
             [ -f "$F" ] || { echo "ফাইল নেই" | tee -a "$R"; return 1; }
             ffprobe -v error -show_entries format=duration,size:stream=codec_name,codec_type,width,height,r_frame_rate,channels,sample_rate -of default=nw=1 "$F" | tee -a "$R"
             local DUR W H A
-            DUR=$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$F")
-            W=$(ffprobe -v error -select_streams v:0 -show_entries stream=width -of csv=p=0 "$F")
-            H=$(ffprobe -v error -select_streams v:0 -show_entries stream=height -of csv=p=0 "$F")
-            A=$(ffprobe -v error -select_streams a:0 -show_entries stream=codec_name -of csv=p=0 "$F")
+            DUR=$(ffprobe -v error -show_entries format=duration -of default=nw=1:nk=1 "$F" | head -n1)
+            W=$(ffprobe -v error -select_streams v:0 -show_entries stream=width -of default=nw=1:nk=1 "$F" | head -n1)
+            H=$(ffprobe -v error -select_streams v:0 -show_entries stream=height -of default=nw=1:nk=1 "$F" | head -n1)
+            A=$(ffprobe -v error -select_streams a:0 -show_entries stream=codec_name -of default=nw=1:nk=1 "$F" | head -n1)
             [ "$W" = "$EW" ] && [ "$H" = "$EH" ] || { echo "রেজুলিউশন ভুল: ${W}x${H} (চাই ${EW}x${EH})" | tee -a "$R"; return 1; }
             [ -n "$A" ] || { echo "অডিও স্ট্রিম নেই" | tee -a "$R"; return 1; }
             awk -v d="$DUR" 'BEGIN{ exit (d<81.0 || d>81.7) }' || { echo "দৈর্ঘ্য অস্বাভাবিক: $DUR" | tee -a "$R"; return 1; }
