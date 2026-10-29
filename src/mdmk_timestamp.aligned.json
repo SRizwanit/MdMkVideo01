@@ -1,0 +1,1078 @@
+{
+  "audio_metadata": {
+    "language": "bn-BD",
+    "topic": "Istinja Sunnah (ইস্তেনজার সুন্নাত)",
+    "speaker": "MD MK",
+    "estimated_duration_seconds": 53.0,
+    "aligned": true,
+    "aligned_by": "voice-activity pauses + punctuation DP",
+    "duration_seconds": 81.32
+  },
+  "full_transcription": "আসসালামু আলাইকুম ওয়ারাহমাতুল্লাহি ওয়াবারাকাতুহু। প্রিয় বন্ধুগণ, আজকে আমরা জানবো ইস্তেনজার সুন্নাত। নিজ প্রয়োজনে হাজত সারি আমরা সবাই। ইস্তেনজা আমরা সবাই করি, কিন্তু ইস্তেনজার যে সুন্নাত তরিকা রয়েছে আমরা কি জানি? আসুন, আজকে জেনে নেই ইস্তেনজার সুন্নাত। ইস্তেনজার সুন্নাত মোট ১৬টি। আজকে আমরা জানবো ৪টি। আজকে আমরা জানবো ৪টি। এর মধ্যে ১ নাম্বার হচ্ছে মাথা ঢেকে রাখা। ২ নাম্বার হচ্ছে স্যান্ডেল অথবা জুতো পরিধান করা। ৩ নাম্বার হচ্ছে দোয়া পড়া। কোন দোয়া? দোয়াটি হলো: বিসমিল্লাহির রহমানির রহিম, আল্লাহুম্মা ইন্নি আউজু বিকা মিনাল খুবুসি ওয়াল খাবায়িস। ৪ নাম্বার হচ্ছে দোয়া পড়ার পরে বাম পা দিয়ে আগে প্রবেশ করা। এই ৪টি হচ্ছে ইস্তেনজার প্রথম ৪টি সুন্নাত। আসুন আমরা সুন্নাত শিখি, সুন্নাত অনুযায়ী জীবন পরিচালিত করি, এবং বাকি যে ১২টি সুন্নাত রয়েছে ইস্তেনজার—এই ইস্তেনজার ১২টি সুন্নাত জানার জন্য MD MK-এর সাথে থাকি। আসসালামু আলাইকুম ওয়ারাহমাতুল্লাহি ওয়াবারাকাতুহু।",
+  "word_timestamps": [
+    {
+      "index": 1,
+      "word": "আসসালামু",
+      "start_time": "00:00.32",
+      "end_time": "00:01.02",
+      "start_sec": 0.32,
+      "end_sec": 1.022
+    },
+    {
+      "index": 2,
+      "word": "আলাইকুম",
+      "start_time": "00:01.02",
+      "end_time": "00:01.65",
+      "start_sec": 1.022,
+      "end_sec": 1.646
+    },
+    {
+      "index": 3,
+      "word": "ওয়ারাহমাতুল্লাহি",
+      "start_time": "00:01.65",
+      "end_time": "00:03.05",
+      "start_sec": 1.646,
+      "end_sec": 3.05
+    },
+    {
+      "index": 4,
+      "word": "ওয়াবারাকাতুহু।",
+      "start_time": "00:03.05",
+      "end_time": "00:04.22",
+      "start_sec": 3.05,
+      "end_sec": 4.22
+    },
+    {
+      "index": 5,
+      "word": "প্রিয়",
+      "start_time": "00:04.76",
+      "end_time": "00:05.23",
+      "start_sec": 4.76,
+      "end_sec": 5.229
+    },
+    {
+      "index": 6,
+      "word": "বন্ধুগণ,",
+      "start_time": "00:05.23",
+      "end_time": "00:05.76",
+      "start_sec": 5.229,
+      "end_sec": 5.764
+    },
+    {
+      "index": 7,
+      "word": "আজকে",
+      "start_time": "00:05.76",
+      "end_time": "00:06.10",
+      "start_sec": 5.764,
+      "end_sec": 6.099
+    },
+    {
+      "index": 8,
+      "word": "আমরা",
+      "start_time": "00:06.10",
+      "end_time": "00:06.43",
+      "start_sec": 6.099,
+      "end_sec": 6.433
+    },
+    {
+      "index": 9,
+      "word": "জানবো",
+      "start_time": "00:06.43",
+      "end_time": "00:06.84",
+      "start_sec": 6.433,
+      "end_sec": 6.835
+    },
+    {
+      "index": 10,
+      "word": "ইস্তেনজার",
+      "start_time": "00:06.84",
+      "end_time": "00:07.50",
+      "start_sec": 6.835,
+      "end_sec": 7.504
+    },
+    {
+      "index": 11,
+      "word": "সুন্নাত।",
+      "start_time": "00:07.50",
+      "end_time": "00:08.04",
+      "start_sec": 7.504,
+      "end_sec": 8.04
+    },
+    {
+      "index": 12,
+      "word": "নিজ",
+      "start_time": "00:10.52",
+      "end_time": "00:10.78",
+      "start_sec": 10.52,
+      "end_sec": 10.78
+    },
+    {
+      "index": 13,
+      "word": "প্রয়োজনে",
+      "start_time": "00:10.94",
+      "end_time": "00:11.66",
+      "start_sec": 10.94,
+      "end_sec": 11.66
+    },
+    {
+      "index": 14,
+      "word": "হাজত",
+      "start_time": "00:12.02",
+      "end_time": "00:12.35",
+      "start_sec": 12.02,
+      "end_sec": 12.35
+    },
+    {
+      "index": 15,
+      "word": "সারি",
+      "start_time": "00:12.35",
+      "end_time": "00:12.68",
+      "start_sec": 12.35,
+      "end_sec": 12.68
+    },
+    {
+      "index": 16,
+      "word": "আমরা",
+      "start_time": "00:12.68",
+      "end_time": "00:13.01",
+      "start_sec": 12.68,
+      "end_sec": 13.01
+    },
+    {
+      "index": 17,
+      "word": "সবাই।",
+      "start_time": "00:13.01",
+      "end_time": "00:13.34",
+      "start_sec": 13.01,
+      "end_sec": 13.34
+    },
+    {
+      "index": 18,
+      "word": "ইস্তেনজা",
+      "start_time": "00:13.90",
+      "end_time": "00:14.48",
+      "start_sec": 13.9,
+      "end_sec": 14.479
+    },
+    {
+      "index": 19,
+      "word": "আমরা",
+      "start_time": "00:14.48",
+      "end_time": "00:14.80",
+      "start_sec": 14.479,
+      "end_sec": 14.801
+    },
+    {
+      "index": 20,
+      "word": "সবাই",
+      "start_time": "00:14.80",
+      "end_time": "00:15.12",
+      "start_sec": 14.801,
+      "end_sec": 15.123
+    },
+    {
+      "index": 21,
+      "word": "করি,",
+      "start_time": "00:15.12",
+      "end_time": "00:15.38",
+      "start_sec": 15.123,
+      "end_sec": 15.38
+    },
+    {
+      "index": 22,
+      "word": "কিন্তু",
+      "start_time": "00:15.64",
+      "end_time": "00:16.06",
+      "start_sec": 15.64,
+      "end_sec": 16.06
+    },
+    {
+      "index": 23,
+      "word": "ইস্তেনজার",
+      "start_time": "00:16.34",
+      "end_time": "00:16.90",
+      "start_sec": 16.34,
+      "end_sec": 16.902
+    },
+    {
+      "index": 24,
+      "word": "যে",
+      "start_time": "00:16.90",
+      "end_time": "00:17.07",
+      "start_sec": 16.902,
+      "end_sec": 17.07
+    },
+    {
+      "index": 25,
+      "word": "সুন্নাত",
+      "start_time": "00:17.07",
+      "end_time": "00:17.52",
+      "start_sec": 17.07,
+      "end_sec": 17.52
+    },
+    {
+      "index": 26,
+      "word": "তরিকা",
+      "start_time": "00:17.52",
+      "end_time": "00:17.86",
+      "start_sec": 17.52,
+      "end_sec": 17.857
+    },
+    {
+      "index": 27,
+      "word": "রয়েছে",
+      "start_time": "00:17.86",
+      "end_time": "00:18.25",
+      "start_sec": 17.857,
+      "end_sec": 18.25
+    },
+    {
+      "index": 28,
+      "word": "আমরা",
+      "start_time": "00:18.25",
+      "end_time": "00:18.53",
+      "start_sec": 18.25,
+      "end_sec": 18.531
+    },
+    {
+      "index": 29,
+      "word": "কি",
+      "start_time": "00:18.53",
+      "end_time": "00:18.70",
+      "start_sec": 18.531,
+      "end_sec": 18.699
+    },
+    {
+      "index": 30,
+      "word": "জানি?",
+      "start_time": "00:18.70",
+      "end_time": "00:18.98",
+      "start_sec": 18.699,
+      "end_sec": 18.98
+    },
+    {
+      "index": 31,
+      "word": "আসুন,",
+      "start_time": "00:20.26",
+      "end_time": "00:20.51",
+      "start_sec": 20.26,
+      "end_sec": 20.51
+    },
+    {
+      "index": 32,
+      "word": "আজকে",
+      "start_time": "00:20.51",
+      "end_time": "00:20.76",
+      "start_sec": 20.51,
+      "end_sec": 20.76
+    },
+    {
+      "index": 33,
+      "word": "জেনে",
+      "start_time": "00:21.08",
+      "end_time": "00:21.39",
+      "start_sec": 21.08,
+      "end_sec": 21.391
+    },
+    {
+      "index": 34,
+      "word": "নেই",
+      "start_time": "00:21.39",
+      "end_time": "00:21.64",
+      "start_sec": 21.391,
+      "end_sec": 21.64
+    },
+    {
+      "index": 35,
+      "word": "ইস্তেনজার",
+      "start_time": "00:21.64",
+      "end_time": "00:22.26",
+      "start_sec": 21.64,
+      "end_sec": 22.262
+    },
+    {
+      "index": 36,
+      "word": "সুন্নাত।",
+      "start_time": "00:22.26",
+      "end_time": "00:22.76",
+      "start_sec": 22.262,
+      "end_sec": 22.76
+    },
+    {
+      "index": 37,
+      "word": "ইস্তেনজার",
+      "start_time": "00:23.36",
+      "end_time": "00:23.90",
+      "start_sec": 23.36,
+      "end_sec": 23.904
+    },
+    {
+      "index": 38,
+      "word": "সুন্নাত",
+      "start_time": "00:23.90",
+      "end_time": "00:24.34",
+      "start_sec": 23.904,
+      "end_sec": 24.34
+    },
+    {
+      "index": 39,
+      "word": "মোট",
+      "start_time": "00:24.50",
+      "end_time": "00:24.86",
+      "start_sec": 24.5,
+      "end_sec": 24.86
+    },
+    {
+      "index": 40,
+      "word": "১৬টি।",
+      "start_time": "00:25.04",
+      "end_time": "00:25.30",
+      "start_sec": 25.04,
+      "end_sec": 25.3
+    },
+    {
+      "index": 41,
+      "word": "আজকে",
+      "start_time": "00:25.30",
+      "end_time": "00:25.56",
+      "start_sec": 25.3,
+      "end_sec": 25.56
+    },
+    {
+      "index": 42,
+      "word": "আমরা",
+      "start_time": "00:26.00",
+      "end_time": "00:26.33",
+      "start_sec": 26.0,
+      "end_sec": 26.327
+    },
+    {
+      "index": 43,
+      "word": "জানবো",
+      "start_time": "00:26.33",
+      "end_time": "00:26.72",
+      "start_sec": 26.327,
+      "end_sec": 26.719
+    },
+    {
+      "index": 44,
+      "word": "৪টি।",
+      "start_time": "00:26.72",
+      "end_time": "00:26.98",
+      "start_sec": 26.719,
+      "end_sec": 26.98
+    },
+    {
+      "index": 45,
+      "word": "আজকে",
+      "start_time": "00:28.88",
+      "end_time": "00:29.14",
+      "start_sec": 28.88,
+      "end_sec": 29.136
+    },
+    {
+      "index": 46,
+      "word": "আমরা",
+      "start_time": "00:29.14",
+      "end_time": "00:29.39",
+      "start_sec": 29.136,
+      "end_sec": 29.392
+    },
+    {
+      "index": 47,
+      "word": "জানবো",
+      "start_time": "00:29.39",
+      "end_time": "00:29.70",
+      "start_sec": 29.392,
+      "end_sec": 29.7
+    },
+    {
+      "index": 48,
+      "word": "৪টি।",
+      "start_time": "00:30.16",
+      "end_time": "00:30.56",
+      "start_sec": 30.16,
+      "end_sec": 30.56
+    },
+    {
+      "index": 49,
+      "word": "এর",
+      "start_time": "00:30.98",
+      "end_time": "00:31.15",
+      "start_sec": 30.98,
+      "end_sec": 31.148
+    },
+    {
+      "index": 50,
+      "word": "মধ্যে",
+      "start_time": "00:31.15",
+      "end_time": "00:31.48",
+      "start_sec": 31.148,
+      "end_sec": 31.484
+    },
+    {
+      "index": 51,
+      "word": "১",
+      "start_time": "00:31.48",
+      "end_time": "00:31.60",
+      "start_sec": 31.484,
+      "end_sec": 31.596
+    },
+    {
+      "index": 52,
+      "word": "নাম্বার",
+      "start_time": "00:31.60",
+      "end_time": "00:32.04",
+      "start_sec": 31.596,
+      "end_sec": 32.044
+    },
+    {
+      "index": 53,
+      "word": "হচ্ছে",
+      "start_time": "00:32.04",
+      "end_time": "00:32.38",
+      "start_sec": 32.044,
+      "end_sec": 32.38
+    },
+    {
+      "index": 54,
+      "word": "মাথা",
+      "start_time": "00:32.38",
+      "end_time": "00:32.66",
+      "start_sec": 32.38,
+      "end_sec": 32.66
+    },
+    {
+      "index": 55,
+      "word": "ঢেকে",
+      "start_time": "00:33.52",
+      "end_time": "00:33.85",
+      "start_sec": 33.52,
+      "end_sec": 33.85
+    },
+    {
+      "index": 56,
+      "word": "রাখা।",
+      "start_time": "00:33.85",
+      "end_time": "00:34.18",
+      "start_sec": 33.85,
+      "end_sec": 34.18
+    },
+    {
+      "index": 57,
+      "word": "২",
+      "start_time": "00:35.14",
+      "end_time": "00:35.26",
+      "start_sec": 35.14,
+      "end_sec": 35.263
+    },
+    {
+      "index": 58,
+      "word": "নাম্বার",
+      "start_time": "00:35.26",
+      "end_time": "00:35.75",
+      "start_sec": 35.263,
+      "end_sec": 35.752
+    },
+    {
+      "index": 59,
+      "word": "হচ্ছে",
+      "start_time": "00:35.75",
+      "end_time": "00:36.12",
+      "start_sec": 35.752,
+      "end_sec": 36.12
+    },
+    {
+      "index": 60,
+      "word": "স্যান্ডেল",
+      "start_time": "00:36.98",
+      "end_time": "00:37.53",
+      "start_sec": 36.98,
+      "end_sec": 37.535
+    },
+    {
+      "index": 61,
+      "word": "অথবা",
+      "start_time": "00:37.53",
+      "end_time": "00:37.81",
+      "start_sec": 37.535,
+      "end_sec": 37.812
+    },
+    {
+      "index": 62,
+      "word": "জুতো",
+      "start_time": "00:37.81",
+      "end_time": "00:38.09",
+      "start_sec": 37.812,
+      "end_sec": 38.09
+    },
+    {
+      "index": 63,
+      "word": "পরিধান",
+      "start_time": "00:38.09",
+      "end_time": "00:38.48",
+      "start_sec": 38.09,
+      "end_sec": 38.478
+    },
+    {
+      "index": 64,
+      "word": "করা।",
+      "start_time": "00:38.48",
+      "end_time": "00:38.70",
+      "start_sec": 38.478,
+      "end_sec": 38.7
+    },
+    {
+      "index": 65,
+      "word": "৩",
+      "start_time": "00:39.28",
+      "end_time": "00:39.40",
+      "start_sec": 39.28,
+      "end_sec": 39.4
+    },
+    {
+      "index": 66,
+      "word": "নাম্বার",
+      "start_time": "00:39.40",
+      "end_time": "00:39.88",
+      "start_sec": 39.4,
+      "end_sec": 39.88
+    },
+    {
+      "index": 67,
+      "word": "হচ্ছে",
+      "start_time": "00:39.88",
+      "end_time": "00:40.24",
+      "start_sec": 39.88,
+      "end_sec": 40.24
+    },
+    {
+      "index": 68,
+      "word": "দোয়া",
+      "start_time": "00:40.46",
+      "end_time": "00:40.82",
+      "start_sec": 40.46,
+      "end_sec": 40.82
+    },
+    {
+      "index": 69,
+      "word": "পড়া।",
+      "start_time": "00:40.82",
+      "end_time": "00:41.12",
+      "start_sec": 40.82,
+      "end_sec": 41.12
+    },
+    {
+      "index": 70,
+      "word": "কোন",
+      "start_time": "00:41.80",
+      "end_time": "00:42.00",
+      "start_sec": 41.8,
+      "end_sec": 42.0
+    },
+    {
+      "index": 71,
+      "word": "দোয়া?",
+      "start_time": "00:42.00",
+      "end_time": "00:42.30",
+      "start_sec": 42.0,
+      "end_sec": 42.3
+    },
+    {
+      "index": 72,
+      "word": "দোয়াটি",
+      "start_time": "00:42.88",
+      "end_time": "00:43.39",
+      "start_sec": 42.88,
+      "end_sec": 43.389
+    },
+    {
+      "index": 73,
+      "word": "হলো:",
+      "start_time": "00:43.39",
+      "end_time": "00:43.64",
+      "start_sec": 43.389,
+      "end_sec": 43.644
+    },
+    {
+      "index": 74,
+      "word": "বিসমিল্লাহির",
+      "start_time": "00:43.64",
+      "end_time": "00:44.47",
+      "start_sec": 43.644,
+      "end_sec": 44.472
+    },
+    {
+      "index": 75,
+      "word": "রহমানির",
+      "start_time": "00:44.47",
+      "end_time": "00:44.98",
+      "start_sec": 44.472,
+      "end_sec": 44.982
+    },
+    {
+      "index": 76,
+      "word": "রহিম,",
+      "start_time": "00:44.98",
+      "end_time": "00:45.30",
+      "start_sec": 44.982,
+      "end_sec": 45.3
+    },
+    {
+      "index": 77,
+      "word": "আল্লাহুম্মা",
+      "start_time": "00:45.58",
+      "end_time": "00:46.39",
+      "start_sec": 45.58,
+      "end_sec": 46.394
+    },
+    {
+      "index": 78,
+      "word": "ইন্নি",
+      "start_time": "00:46.39",
+      "end_time": "00:46.80",
+      "start_sec": 46.394,
+      "end_sec": 46.801
+    },
+    {
+      "index": 79,
+      "word": "আউজু",
+      "start_time": "00:46.80",
+      "end_time": "00:47.14",
+      "start_sec": 46.801,
+      "end_sec": 47.14
+    },
+    {
+      "index": 80,
+      "word": "বিকা",
+      "start_time": "00:47.32",
+      "end_time": "00:47.66",
+      "start_sec": 47.32,
+      "end_sec": 47.662
+    },
+    {
+      "index": 81,
+      "word": "মিনাল",
+      "start_time": "00:47.66",
+      "end_time": "00:48.07",
+      "start_sec": 47.662,
+      "end_sec": 48.073
+    },
+    {
+      "index": 82,
+      "word": "খুবুসি",
+      "start_time": "00:48.07",
+      "end_time": "00:48.55",
+      "start_sec": 48.073,
+      "end_sec": 48.553
+    },
+    {
+      "index": 83,
+      "word": "ওয়াল",
+      "start_time": "00:48.55",
+      "end_time": "00:48.96",
+      "start_sec": 48.553,
+      "end_sec": 48.964
+    },
+    {
+      "index": 84,
+      "word": "খাবায়িস।",
+      "start_time": "00:48.96",
+      "end_time": "00:49.58",
+      "start_sec": 48.964,
+      "end_sec": 49.58
+    },
+    {
+      "index": 85,
+      "word": "৪",
+      "start_time": "00:50.74",
+      "end_time": "00:50.87",
+      "start_sec": 50.74,
+      "end_sec": 50.867
+    },
+    {
+      "index": 86,
+      "word": "নাম্বার",
+      "start_time": "00:50.87",
+      "end_time": "00:51.38",
+      "start_sec": 50.867,
+      "end_sec": 51.377
+    },
+    {
+      "index": 87,
+      "word": "হচ্ছে",
+      "start_time": "00:51.38",
+      "end_time": "00:51.76",
+      "start_sec": 51.377,
+      "end_sec": 51.76
+    },
+    {
+      "index": 88,
+      "word": "দোয়া",
+      "start_time": "00:52.62",
+      "end_time": "00:53.05",
+      "start_sec": 52.62,
+      "end_sec": 53.047
+    },
+    {
+      "index": 89,
+      "word": "পড়ার",
+      "start_time": "00:53.05",
+      "end_time": "00:53.48",
+      "start_sec": 53.047,
+      "end_sec": 53.475
+    },
+    {
+      "index": 90,
+      "word": "পরে",
+      "start_time": "00:53.48",
+      "end_time": "00:53.76",
+      "start_sec": 53.475,
+      "end_sec": 53.76
+    },
+    {
+      "index": 91,
+      "word": "বাম",
+      "start_time": "00:54.44",
+      "end_time": "00:54.69",
+      "start_sec": 54.44,
+      "end_sec": 54.686
+    },
+    {
+      "index": 92,
+      "word": "পা",
+      "start_time": "00:54.69",
+      "end_time": "00:54.87",
+      "start_sec": 54.686,
+      "end_sec": 54.87
+    },
+    {
+      "index": 93,
+      "word": "দিয়ে",
+      "start_time": "00:54.87",
+      "end_time": "00:55.24",
+      "start_sec": 54.87,
+      "end_sec": 55.239
+    },
+    {
+      "index": 94,
+      "word": "আগে",
+      "start_time": "00:55.24",
+      "end_time": "00:55.48",
+      "start_sec": 55.239,
+      "end_sec": 55.484
+    },
+    {
+      "index": 95,
+      "word": "প্রবেশ",
+      "start_time": "00:55.48",
+      "end_time": "00:55.91",
+      "start_sec": 55.484,
+      "end_sec": 55.914
+    },
+    {
+      "index": 96,
+      "word": "করা।",
+      "start_time": "00:55.91",
+      "end_time": "00:56.16",
+      "start_sec": 55.914,
+      "end_sec": 56.16
+    },
+    {
+      "index": 97,
+      "word": "এই",
+      "start_time": "00:57.44",
+      "end_time": "00:57.72",
+      "start_sec": 57.44,
+      "end_sec": 57.717
+    },
+    {
+      "index": 98,
+      "word": "৪টি",
+      "start_time": "00:57.72",
+      "end_time": "00:58.09",
+      "start_sec": 57.717,
+      "end_sec": 58.086
+    },
+    {
+      "index": 99,
+      "word": "হচ্ছে",
+      "start_time": "00:58.09",
+      "end_time": "00:58.64",
+      "start_sec": 58.086,
+      "end_sec": 58.64
+    },
+    {
+      "index": 100,
+      "word": "ইস্তেনজার",
+      "start_time": "00:59.18",
+      "end_time": "00:59.82",
+      "start_sec": 59.18,
+      "end_sec": 59.823
+    },
+    {
+      "index": 101,
+      "word": "প্রথম",
+      "start_time": "00:59.82",
+      "end_time": "01:00.21",
+      "start_sec": 59.823,
+      "end_sec": 60.209
+    },
+    {
+      "index": 102,
+      "word": "৪টি",
+      "start_time": "01:00.21",
+      "end_time": "01:00.47",
+      "start_sec": 60.209,
+      "end_sec": 60.466
+    },
+    {
+      "index": 103,
+      "word": "সুন্নাত।",
+      "start_time": "01:00.47",
+      "end_time": "01:00.98",
+      "start_sec": 60.466,
+      "end_sec": 60.98
+    },
+    {
+      "index": 104,
+      "word": "আসুন",
+      "start_time": "01:01.94",
+      "end_time": "01:02.18",
+      "start_sec": 61.94,
+      "end_sec": 62.18
+    },
+    {
+      "index": 105,
+      "word": "আমরা",
+      "start_time": "01:02.18",
+      "end_time": "01:02.42",
+      "start_sec": 62.18,
+      "end_sec": 62.42
+    },
+    {
+      "index": 106,
+      "word": "সুন্নাত",
+      "start_time": "01:02.92",
+      "end_time": "01:03.50",
+      "start_sec": 62.92,
+      "end_sec": 63.5
+    },
+    {
+      "index": 107,
+      "word": "শিখি,",
+      "start_time": "01:03.72",
+      "end_time": "01:04.04",
+      "start_sec": 63.72,
+      "end_sec": 64.035
+    },
+    {
+      "index": 108,
+      "word": "সুন্নাত",
+      "start_time": "01:04.04",
+      "end_time": "01:04.54",
+      "start_sec": 64.035,
+      "end_sec": 64.54
+    },
+    {
+      "index": 109,
+      "word": "অনুযায়ী",
+      "start_time": "01:05.16",
+      "end_time": "01:05.81",
+      "start_sec": 65.16,
+      "end_sec": 65.813
+    },
+    {
+      "index": 110,
+      "word": "জীবন",
+      "start_time": "01:05.81",
+      "end_time": "01:06.18",
+      "start_sec": 65.813,
+      "end_sec": 66.176
+    },
+    {
+      "index": 111,
+      "word": "পরিচালিত",
+      "start_time": "01:06.18",
+      "end_time": "01:06.83",
+      "start_sec": 66.176,
+      "end_sec": 66.83
+    },
+    {
+      "index": 112,
+      "word": "করি,",
+      "start_time": "01:06.83",
+      "end_time": "01:07.12",
+      "start_sec": 66.83,
+      "end_sec": 67.12
+    },
+    {
+      "index": 113,
+      "word": "এবং",
+      "start_time": "01:09.06",
+      "end_time": "01:09.48",
+      "start_sec": 69.06,
+      "end_sec": 69.48
+    },
+    {
+      "index": 114,
+      "word": "বাকি",
+      "start_time": "01:09.94",
+      "end_time": "01:10.29",
+      "start_sec": 69.94,
+      "end_sec": 70.287
+    },
+    {
+      "index": 115,
+      "word": "যে",
+      "start_time": "01:10.29",
+      "end_time": "01:10.50",
+      "start_sec": 70.287,
+      "end_sec": 70.496
+    },
+    {
+      "index": 116,
+      "word": "১২টি",
+      "start_time": "01:10.50",
+      "end_time": "01:10.84",
+      "start_sec": 70.496,
+      "end_sec": 70.843
+    },
+    {
+      "index": 117,
+      "word": "সুন্নাত",
+      "start_time": "01:10.84",
+      "end_time": "01:11.40",
+      "start_sec": 70.843,
+      "end_sec": 71.399
+    },
+    {
+      "index": 118,
+      "word": "রয়েছে",
+      "start_time": "01:11.40",
+      "end_time": "01:11.89",
+      "start_sec": 71.399,
+      "end_sec": 71.885
+    },
+    {
+      "index": 119,
+      "word": "ইস্তেনজার—",
+      "start_time": "01:11.89",
+      "end_time": "01:12.58",
+      "start_sec": 71.885,
+      "end_sec": 72.58
+    },
+    {
+      "index": 120,
+      "word": "এই",
+      "start_time": "01:12.80",
+      "end_time": "01:13.01",
+      "start_sec": 72.8,
+      "end_sec": 73.008
+    },
+    {
+      "index": 121,
+      "word": "ইস্তেনজার",
+      "start_time": "01:13.01",
+      "end_time": "01:13.70",
+      "start_sec": 73.008,
+      "end_sec": 73.702
+    },
+    {
+      "index": 122,
+      "word": "১২টি",
+      "start_time": "01:13.70",
+      "end_time": "01:14.05",
+      "start_sec": 73.702,
+      "end_sec": 74.049
+    },
+    {
+      "index": 123,
+      "word": "সুন্নাত",
+      "start_time": "01:14.05",
+      "end_time": "01:14.60",
+      "start_sec": 74.049,
+      "end_sec": 74.604
+    },
+    {
+      "index": 124,
+      "word": "জানার",
+      "start_time": "01:14.60",
+      "end_time": "01:15.02",
+      "start_sec": 74.604,
+      "end_sec": 75.02
+    },
+    {
+      "index": 125,
+      "word": "জন্য",
+      "start_time": "01:15.22",
+      "end_time": "01:15.57",
+      "start_sec": 75.22,
+      "end_sec": 75.574
+    },
+    {
+      "index": 126,
+      "word": "MD",
+      "start_time": "01:15.57",
+      "end_time": "01:15.79",
+      "start_sec": 75.574,
+      "end_sec": 75.786
+    },
+    {
+      "index": 127,
+      "word": "MK-এর",
+      "start_time": "01:15.79",
+      "end_time": "01:16.14",
+      "start_sec": 75.786,
+      "end_sec": 76.14
+    },
+    {
+      "index": 128,
+      "word": "সাথে",
+      "start_time": "01:16.36",
+      "end_time": "01:16.75",
+      "start_sec": 76.36,
+      "end_sec": 76.75
+    },
+    {
+      "index": 129,
+      "word": "থাকি।",
+      "start_time": "01:16.75",
+      "end_time": "01:17.14",
+      "start_sec": 76.75,
+      "end_sec": 77.14
+    },
+    {
+      "index": 130,
+      "word": "আসসালামু",
+      "start_time": "01:17.54",
+      "end_time": "01:18.18",
+      "start_sec": 77.54,
+      "end_sec": 78.184
+    },
+    {
+      "index": 131,
+      "word": "আলাইকুম",
+      "start_time": "01:18.18",
+      "end_time": "01:18.76",
+      "start_sec": 78.184,
+      "end_sec": 78.757
+    },
+    {
+      "index": 132,
+      "word": "ওয়ারাহমাতুল্লাহি",
+      "start_time": "01:18.76",
+      "end_time": "01:20.05",
+      "start_sec": 78.757,
+      "end_sec": 80.046
+    },
+    {
+      "index": 133,
+      "word": "ওয়াবারাকাতুহু।",
+      "start_time": "01:20.05",
+      "end_time": "01:21.12",
+      "start_sec": 80.046,
+      "end_sec": 81.12
+    }
+  ]
+}
