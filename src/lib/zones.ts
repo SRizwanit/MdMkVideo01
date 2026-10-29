@@ -4,7 +4,7 @@ export const VIDEO = {
   width: 720,
   height: 1280,
   fps: 25,
-  durationInFrames: 2033, // ৮১.৩২ সে. × ২৫
+  durationInFrames: 1604, // ৬৪.১৬ সে. × ২৫
 };
 
 export type Box = { x0: number; y0: number; x1: number; y1: number };
