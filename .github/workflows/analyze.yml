@@ -1,0 +1,41 @@
+name: Analyze MdMK video
+
+on:
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check input files
+        run: |
+          ls -la src/
+          test -f src/MdMK.mp4 || { echo "::error::src/MdMK.mp4 পাওয়া যায়নি (নামের বড়-ছোট হাতের অক্ষর মিলিয়ে দেখুন)"; exit 1; }
+          test -f src/mdmk_timestamp.json || { echo "::error::src/mdmk_timestamp.json পাওয়া যায়নি"; exit 1; }
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install tools
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y ffmpeg
+          pip install numpy opencv-python-headless
+
+      - name: Analyze
+        run: python scripts/analyze.py src/MdMK.mp4 src/mdmk_timestamp.json analysis
+
+      - name: Show report in run summary
+        run: |
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          cat analysis/analysis.txt >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: analysis
+          path: analysis/
