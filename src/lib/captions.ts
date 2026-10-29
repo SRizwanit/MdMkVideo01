@@ -39,14 +39,13 @@ export const PAGES = buildPages();
 
 export const toFrame = (sec: number) => Math.round(sec * VIDEO.fps);
 
-/** নির্দিষ্ট সময়ে কোন পেজ দেখানো হবে (পেজের ০.১৫ সে. আগে থেকে, বিরতিতে ০.৩ সে. ধরে) */
-export const pageAt = (t: number): Page | null => {
-  for (let i = 0; i < PAGES.length; i++) {
-    const p = PAGES[i];
-    const next = PAGES[i + 1];
-    const from = p.start - 0.15;
-    const to = Math.min(p.end + 0.3, next ? next.start - 0.15 : Infinity);
-    if (t >= from && t < to) return p;
-  }
-  return null;
-};
+export type PageWindow = { page: Page; from: number; to: number };
+
+/** প্রতিটি পেজ কখন থেকে কখন পর্দায় থাকবে (সেকেন্ড): ০.১৫ সে. আগে থেকে, বিরতিতে ০.৩ সে. ধরে */
+export const WINDOWS: PageWindow[] = PAGES.map((p, i) => {
+  const prev = PAGES[i - 1];
+  const next = PAGES[i + 1];
+  const from = Math.max(0, p.start - 0.15, prev ? prev.end + 0.02 : 0);
+  const to = Math.min(p.end + 0.3, next ? next.start - 0.15 : Infinity, VIDEO.durationInFrames / VIDEO.fps);
+  return { page: p, from, to: Math.max(to, from + 0.2) };
+});
