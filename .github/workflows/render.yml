@@ -2,7 +2,7 @@ name: Render MdMK
 
 # মোড:
 #   check   → ১২টি স্টিল ফ্রেম (render-check আর্টিফ্যাক্ট) — চেহারা-ফ্রি ও লেআউট দেখার জন্য
-#   preview → ৪টি স্টিল + ছোট ক্লিপ (২৬–৩৮ সে., SFX সহ) — দ্রুত ও কম খরচ
+#   preview → ৪টি স্টিল + ছোট ক্লিপ (৩২–৪৪ সে., SFX সহ) — দ্রুত ও কম খরচ
 #   final   → পূর্ণ রেন্ডার (HD / Full HD / 4K) + যাচাই + GitHub Release
 #
 # ফাইনালের সংস্করণ (পোর্ট্রেট ৯:১৬):
@@ -43,7 +43,7 @@ jobs:
       MODE: ${{ inputs.mode }}
       VERSIONS: ${{ inputs.versions }}
       FPS: 25
-      DURATION: "81.32"
+      DURATION: "64.16"
     steps:
       - uses: actions/checkout@v4
 
@@ -129,7 +129,7 @@ jobs:
         run: |
           set -o pipefail
           mkdir -p out/check
-          for s in 1 4 8 14 20 27 31 36 40 45 49 56; do
+          for s in 15 22 24 29 32 37 41 45 53 56 60 63; do
             f=$((s * FPS))
             npx remotion still "$ENTRY" MdMK "out/check/frame_$(printf '%03d' $s)s.png" --frame=$f 2>&1 | tee -a out/logs/check.log
           done
@@ -140,12 +140,12 @@ jobs:
         run: |
           set -o pipefail
           mkdir -p out/preview
-          for s in 3 20 30 48; do
+          for s in 16 22 42 63; do
             npx remotion still "$ENTRY" MdMK "out/preview/still_${s}s.png" --frame=$((s * FPS)) 2>&1 | tee -a out/logs/preview.log
           done
-          # ২৬ সে. → ৩৮ সে. (ফ্রেম ৬৫০–৯৫০): সুন্নাত ব্যাজ + দোয়া অংশ
-          npx remotion render "$ENTRY" MdMK out/preview/clip_26-38s.mp4 \
-            --frames=650-950 --codec=h264 --audio-codec=aac --crf=23 --overwrite 2>&1 | tee -a out/logs/preview.log
+          # ৩২ সে. → ৪৪ সে. (ফ্রেম ৮০০–১১০০): পয়েন্ট ৩ + দোয়া + পয়েন্ট ৪ অংশ
+          npx remotion render "$ENTRY" MdMK out/preview/clip_32-44s.mp4 \
+            --frames=800-1100 --codec=h264 --audio-codec=aac --crf=23 --overwrite 2>&1 | tee -a out/logs/preview.log
 
       # ───────── final: HD / Full HD / 4K ─────────
       - name: "final: HD (720×1280)"
@@ -200,7 +200,7 @@ jobs:
             A=$(ffprobe -v error -select_streams a:0 -show_entries stream=codec_name -of default=nw=1:nk=1 "$F" | head -n1)
             [ "$W" = "$EW" ] && [ "$H" = "$EH" ] || { echo "রেজুলিউশন ভুল: ${W}x${H} (চাই ${EW}x${EH})" | tee -a "$R"; return 1; }
             [ -n "$A" ] || { echo "অডিও স্ট্রিম নেই" | tee -a "$R"; return 1; }
-            awk -v d="$DUR" 'BEGIN{ exit (d<81.0 || d>81.7) }' || { echo "দৈর্ঘ্য অস্বাভাবিক: $DUR" | tee -a "$R"; return 1; }
+            awk -v d="$DUR" -v t="$DURATION" 'BEGIN{ exit (d<t-0.4 || d>t+0.5) }' || { echo "দৈর্ঘ্য অস্বাভাবিক: $DUR" | tee -a "$R"; return 1; }
             ffmpeg -nostats -i "$F" -vn -af ebur128=peak=true -f null - 2> "out/ebur_${L}.txt" || true
             sed -n '/Summary:/,$p' "out/ebur_${L}.txt" | tee -a "$R"
             local TP
