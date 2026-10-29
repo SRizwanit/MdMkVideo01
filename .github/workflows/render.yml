@@ -38,7 +38,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
+          # cache: npm বাদ — রিপোতে package-lock.json না থাকলে এটা ফেল করে
 
       - name: সিস্টেম প্যাকেজ (ffmpeg, python-numpy, ফন্ট, Chrome-এর লাইব্রেরি)
         run: |
@@ -48,8 +48,14 @@ jobs:
             libxkbcommon0 libxcomposite1 libxdamage1 libxfixes3 libxrandr2 \
             libgbm1 libasound2t64 || sudo apt-get install -y libasound2
 
-      - name: npm ci
-        run: npm ci
+      - name: npm প্যাকেজ ইনস্টল
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            echo "package-lock.json নেই — npm install চালানো হচ্ছে"
+            npm install --no-audit --no-fund
+          fi
 
       - name: Chrome Headless Shell
         run: npx remotion browser ensure
