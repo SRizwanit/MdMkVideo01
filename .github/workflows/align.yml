@@ -18,7 +18,7 @@ jobs:
         run: |
           sudo apt-get update -y
           sudo apt-get install -y ffmpeg
-          pip install numpy "faster-whisper==1.0.3"
+          pip install numpy requests "faster-whisper==1.0.3"
 
       - name: Cache Whisper model
         uses: actions/cache@v4
