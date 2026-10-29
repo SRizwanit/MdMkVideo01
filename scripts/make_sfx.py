@@ -22,6 +22,7 @@ make_sfx.py — MdMK ফেজ ৭: কোডে SFX তৈরি + একটি
 import argparse
 import json
 import sys
+import unicodedata
 import wave
 from pathlib import Path
 
@@ -31,6 +32,11 @@ SR = 44100
 BASE_DB = -24.0        # প্রতিটি SFX-এর ডিফল্ট peak (dBFS)
 PEAK_LIMIT_DB = -12.0  # মিক্সড ট্র্যাকের সর্বোচ্চ peak
 PUNCT = "।,?:—-.!\"'“”‘’()[]"
+
+
+def nfc(t):
+    """য়/ড়/ঢ় একক-কোড ও nukta-সহ রূপ একই ধরা (দেখতে এক, কোডে ভিন্ন হতে পারে)"""
+    return unicodedata.normalize("NFC", t)
 
 
 def db(x):
@@ -158,7 +164,7 @@ def _walk(o):
                 text = next((v for v in o.values() if isinstance(v, str)), None)
             if text is not None:
                 t = float(o[key]) / (1000.0 if key.endswith("_ms") else 1.0)
-                return [(text.strip(PUNCT + " "), t)]
+                return [(nfc(text).strip(PUNCT + " "), t)]
     elif isinstance(o, list):
         for v in o:
             found += _walk(v)
@@ -200,7 +206,7 @@ def resolve(cue, words):
     pats = cue.get("match")
     if pats is None:
         return []
-    pats = [pats] if isinstance(pats, str) else pats
+    pats = [nfc(x) for x in ([pats] if isinstance(pats, str) else pats)]
     hits = [s for (txt, s) in words if any(p in txt for p in pats)]
     nth = int(cue.get("nth", 1))
     if not hits:
