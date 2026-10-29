@@ -57,8 +57,8 @@ const TitleCard: React.FC = () => {
   return (
     <SafeBox box={BAND} style={{ justifyContent: "center", opacity, transform: `scale(${0.9 + 0.1 * Math.min(enter, 1.05)})` }}>
       <div style={{ ...pill, padding: "10px 34px", textAlign: "center" }}>
-        <div style={{ fontSize: 46, lineHeight: 1.25, color: theme.key }}>ইস্তেনজার সুন্নাত</div>
-        <div style={{ fontSize: 24, lineHeight: 1.2, opacity: 0.8 }}>প্রথম ৪টি সুন্নাত</div>
+        <div style={{ fontSize: 46, lineHeight: 1.25, color: theme.key }}>মসজিদ থেকে বের হওয়া</div>
+        <div style={{ fontSize: 24, lineHeight: 1.2, opacity: 0.8 }}>সুন্নাত তরিকা</div>
       </div>
     </SafeBox>
   );
@@ -157,12 +157,12 @@ const CheckItem: React.FC<{ n: number; label: string; delay: number }> = ({ n, l
         alignItems: "center",
         gap: 8,
         padding: "6px 14px 6px 6px",
-        fontSize: 27,
+        fontSize: 22,
         opacity: Math.min(opacity, interpolate(enter, [0, 1], [0, 1], { extrapolateRight: "clamp" })),
         transform: `translateY(${(1 - Math.min(enter, 1)) * 18}px)`,
       }}
     >
-      <Circle size={46} color={theme.key}>
+      <Circle size={40} color={theme.key}>
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#06261a" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
           <path d="M4 12.5 L10 18 L20 6" strokeDasharray="26" strokeDashoffset={26 * (1 - tick)} />
         </svg>
@@ -197,58 +197,47 @@ const Progress: React.FC = () => {
 };
 
 export const Graphics: React.FC = () => {
+  // a = পয়েন্ট-নম্বর শব্দের index, b = পরের পয়েন্ট (বা পরের দৃশ্য) শুরুর শব্দের index
   const topics = [
-    { n: 1, a: 51, b: 57, title: "মাথা ঢেকে রাখা" },
-    { n: 2, a: 57, b: 65, title: "স্যান্ডেল / জুতো পরিধান" },
-    { n: 3, a: 65, b: 85, title: "দোয়া পড়া" },
-    { n: 4, a: 85, b: 97, title: "বাম পা আগে দিয়ে প্রবেশ" },
+    { n: 1, a: 36, b: 40, title: "বিসমিল্লাহ বলা" },
+    { n: 2, a: 40, b: 46, title: "দরুদ শরীফ পাঠ করা" },
+    { n: 3, a: 46, b: 57, title: "বের হওয়ার দোয়া করা" },
+    { n: 4, a: 62, b: 71, title: "বাম পায়ে বের হওয়া" },
+    { n: 5, a: 71, b: 84, title: "ডান পায়ের জুতো আগে পরা" },
   ];
   return (
     <AbsoluteFill>
-      <Seg from={W(10).start - 0.25} to={W(11).end + 1.6}>
+      <Seg from={W(23).start - 0.25} to={W(28).end + 1.6}>
         <TitleCard />
       </Seg>
 
-      <Seg from={W(40).start - 0.15} to={W(51).start - 0.1}>
-        <CountRow
-          chips={[
-            { label: "মোট সুন্নাত", value: 16, delay: 0, color: theme.count },
-            { label: "আজকের সুন্নাত", value: 4, delay: W(44).start - W(40).start + 0.1, color: theme.key },
-          ]}
-        />
+      <Seg from={W(35).start - 0.15} to={W(36).start - 0.2}>
+        <CountRow chips={[{ label: "সুন্নাত তরিকা", value: 5, delay: 0, color: theme.count }]} />
       </Seg>
 
       {topics.map((t) => (
-        <Seg key={t.n} from={W(t.a).start - 0.15} to={W(t.b).start - 0.12}>
+        <Seg key={t.n} from={W(t.a).start - 0.15} to={W(t.b).start - 0.17}>
           <Topic n={t.n} title={t.title} />
         </Seg>
       ))}
 
       {SHOW_ARABIC ? (
-        <>
-          <Seg from={W(74).start - 0.2} to={W(76).end + 0.2}>
-            <Arabic text="بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ" size={44} />
-          </Seg>
-          <Seg from={W(77).start - 0.15} to={W(84).end + 0.5}>
-            <Arabic text="اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبُثِ وَالْخَبَائِثِ" size={32} />
-          </Seg>
-        </>
+        <Seg from={W(57).start - 0.1} to={W(61).end + 0.2}>
+          <Arabic text="اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ فَضْلِكَ" size={40} />
+        </Seg>
       ) : null}
 
-      <Seg from={W(97).start - 0.1} to={W(103).end + 0.9}>
+      <Seg from={W(84).start - 0.1} to={W(92).end + 0.9}>
         <SafeBox box={BAND} style={{ justifyContent: "center", gap: 8 }}>
-          <CheckItem n={1} label="মাথা ঢাকা" delay={0} />
-          <CheckItem n={2} label="জুতো পরা" delay={0.3} />
+          <CheckItem n={1} label="বিসমিল্লাহ" delay={0} />
+          <CheckItem n={2} label="দরুদ" delay={0.3} />
           <CheckItem n={3} label="দোয়া" delay={0.6} />
           <CheckItem n={4} label="বাম পা" delay={0.9} />
+          <CheckItem n={5} label="ডান পা" delay={1.2} />
         </SafeBox>
       </Seg>
 
-      <Seg from={W(114).start - 0.1} to={W(125).end + 0.4}>
-        <CountRow chips={[{ label: "সুন্নাত বাকি", value: 12, delay: 0, color: theme.count }]} />
-      </Seg>
-
-      <Seg from={W(126).start - 0.2} to={VIDEO.durationInFrames / VIDEO.fps}>
+      <Seg from={W(102).start - 0.2} to={VIDEO.durationInFrames / VIDEO.fps}>
         <Brand />
       </Seg>
 
