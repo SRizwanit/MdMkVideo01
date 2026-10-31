@@ -2,7 +2,7 @@ name: Render MdMK
 
 # মোড:
 #   check   → ১২টি স্টিল ফ্রেম (render-check আর্টিফ্যাক্ট) — চেহারা-ফ্রি ও লেআউট দেখার জন্য
-#   preview → ৪টি স্টিল + ছোট ক্লিপ (৩২–৪৪ সে., SFX সহ) — দ্রুত ও কম খরচ
+#   preview → ৪টি স্টিল + ছোট ক্লিপ (৫০–৬২ সে., SFX সহ) — দ্রুত ও কম খরচ
 #   final   → পূর্ণ রেন্ডার (HD / Full HD / 4K) + যাচাই + GitHub Release
 #
 # ফাইনালের সংস্করণ (পোর্ট্রেট ৯:১৬):
@@ -43,7 +43,7 @@ jobs:
       MODE: ${{ inputs.mode }}
       VERSIONS: ${{ inputs.versions }}
       FPS: 25
-      DURATION: "64.16"
+      DURATION: "81.36"
     steps:
       - uses: actions/checkout@v4
 
@@ -129,7 +129,7 @@ jobs:
         run: |
           set -o pipefail
           mkdir -p out/check
-          for s in 15 22 24 29 32 37 41 45 53 56 60 63; do
+          for s in 6 9 15 22 30 38 46 55 61 66 72 80; do
             f=$((s * FPS))
             npx remotion still "$ENTRY" MdMK "out/check/frame_$(printf '%03d' $s)s.png" --frame=$f 2>&1 | tee -a out/logs/check.log
           done
@@ -140,12 +140,12 @@ jobs:
         run: |
           set -o pipefail
           mkdir -p out/preview
-          for s in 16 22 42 63; do
+          for s in 6 15 30 66; do
             npx remotion still "$ENTRY" MdMK "out/preview/still_${s}s.png" --frame=$((s * FPS)) 2>&1 | tee -a out/logs/preview.log
           done
-          # ৩২ সে. → ৪৪ সে. (ফ্রেম ৮০০–১১০০): পয়েন্ট ৩ + দোয়া + পয়েন্ট ৪ অংশ
-          npx remotion render "$ENTRY" MdMK out/preview/clip_32-44s.mp4 \
-            --frames=800-1100 --codec=h264 --audio-codec=aac --crf=23 --overwrite 2>&1 | tee -a out/logs/preview.log
+          # ৫০ সে. → ৬২ সে. (ফ্রেম ১২৫০–১৫৫০): সারাংশ চেকলিস্ট + "বাকি ৮" অংশ
+          npx remotion render "$ENTRY" MdMK out/preview/clip_50-62s.mp4 \
+            --frames=1250-1550 --codec=h264 --audio-codec=aac --crf=23 --overwrite 2>&1 | tee -a out/logs/preview.log
 
       # ───────── final: HD / Full HD / 4K ─────────
       - name: "final: HD (720×1280)"
